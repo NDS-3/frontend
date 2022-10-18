@@ -1,13 +1,15 @@
 import React from "react";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+// import "./App.css";
 import Main from "./pages/Main";
+import AllRollingPapers from "./pages/AllRollingPapers";
 
 function App() {
   return (
-    <div className="App">
-      <p>App</p>
-      <Main />
-    </div>
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/all" element={<AllRollingPapers />} />
+    </Routes>
   );
 }
 
