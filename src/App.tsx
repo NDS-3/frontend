@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
-      <Route path="/all" element={<AllRollingPapers />} />
+      <Route path="/:personalPath" element={<AllRollingPapers />} />
     </Routes>
   );
 }
