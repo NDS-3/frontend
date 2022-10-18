@@ -1,0 +1,9 @@
+.allrollingpapers {
+    background: url("/public/img/background02.png");
+    background-size: cover;
+    /* background-color: aliceblue; */
+    height: 100vh;
+}
+.allrollingpapers>div>p {
+    margin: 0;
+}
