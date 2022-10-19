@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Modal from "../components/Modal";
 import LetterContent from "../components/LetterContent";
+import LetterPassword from "../components/LetterPassword";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 
 interface Istate {
@@ -22,7 +24,8 @@ const AllRollingPapers = () => {
   const [pumpkinContent, setPumpkinContent] = useState<Istate["pumpkin"]>();
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showPwModal, setShowPwModal] = useState(false);
+  const [showLetterModal, setShowLetterModal] = useState(false);
 
   useEffect(() => {
     setUserName(personalPath || "user");
@@ -35,7 +38,7 @@ const AllRollingPapers = () => {
   };
 
   const showLetter = (i: number) => {
-    setShowModal(true);
+    setShowPwModal(true);
     console.log(i + "로 알맞는 롤링페이퍼 내용 가져오기");
     // pumpkinId를 담아서 편지 content 받아오도록 요청
     setPumpkinContent(dummyPumpkin);
@@ -73,7 +76,23 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      {showModal && <LetterContent setShowModal={setShowModal} />}
+      {showPwModal && (
+        <Modal
+          setShowModal={setShowPwModal}
+          element={
+            <LetterPassword
+              setShowPwModal={setShowPwModal}
+              setShowLetterModal={setShowLetterModal}
+            />
+          }
+        />
+      )}
+      {showLetterModal && (
+        <Modal
+          setShowModal={setShowLetterModal}
+          element={<LetterContent setShowLetterModal={setShowLetterModal} />}
+        />
+      )}
     </div>
   );
 };
