@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface IProps {
-  letter?: {
-    id: number;
+  setShowModal: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface Istate {
+  letter: {
     imageUrl: string;
     content: string;
+    password: string;
   };
 }
 
-const LetterContent = ({ letter }: IProps) => {
-  const deleteLetter = () => {
-    console.log("이 편지를 지우자");
+const LetterWrite = ({ setShowModal }: IProps) => {
+  const sendLetter = () => {
+    const contentReplaceNewline = () => {
+      return content.replaceAll("<br>", "\n");
+    };
+    console.log(content);
+    setShowModal("닫기");
   };
+  const [imageUrl, setImageUrl] = useState("");
+  const [content, setContent] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2">
       <img
@@ -24,22 +35,29 @@ const LetterContent = ({ letter }: IProps) => {
         alt="pic"
         className="w-1/5 aspect-square absolute left-0 top-0"
       />
-      <div className="text-white w-3/4 whitespace-pre-line absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        {letter?.content}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 flex flex-col items-end">
+        <input
+          className="mb-5 w-3/5"
+          value={password}
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <textarea
+          className="w-full"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </div>
       <div className="absolute right-5 bottom-5">
-        <button className="py-1 px-3 mr-5 rounded-lg shadow-md bg-orange-300">
-          수정
-        </button>
         <button
           className="py-1 px-3 rounded-lg shadow-md bg-orange-300"
-          onClick={() => deleteLetter()}
+          onClick={() => sendLetter()}
         >
-          삭제
+          편지 보내기
         </button>
       </div>
     </div>
   );
 };
 
-export default LetterContent;
+export default LetterWrite;

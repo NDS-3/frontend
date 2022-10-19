@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import LetterContent from "../components/LetterContent";
 import LetterPassword from "../components/LetterPassword";
 import LetterNotice from "../components/LetterNotice";
+import LetterWrite from "../components/LetterWrite";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 
 interface Istate {
@@ -50,6 +51,21 @@ const AllRollingPapers = () => {
     setShowModal("안내");
   };
 
+  const ModalCase = () => {
+    switch (showModal) {
+      case "비번":
+        return <LetterPassword setShowModal={setShowModal} />;
+      case "읽기":
+        return <LetterContent letter={pumpkinContent} />;
+      case "안내":
+        return <LetterNotice setShowModal={setShowModal} />;
+      case "쓰기":
+        return <LetterWrite setShowModal={setShowModal} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="h-screen w-screen relative flex flex-col justify-center text-center">
       <img
@@ -91,20 +107,8 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      {showModal !== "닫기" && (
-        <Modal
-          setShowModal={setShowModal}
-          element={<LetterPassword setShowModal={setShowModal} />}
-        />
-      )}
-      {showModal === "읽기" && (
-        <Modal
-          setShowModal={setShowModal}
-          element={<LetterContent letter={pumpkinContent} />}
-        />
-      )}
-      {showModal === "안내" && (
-        <Modal setShowModal={setShowModal} element={<LetterNotice />} />
+      {showModal !== "닫기" && ModalCase && (
+        <Modal setShowModal={setShowModal} element={<ModalCase />} />
       )}
     </div>
   );

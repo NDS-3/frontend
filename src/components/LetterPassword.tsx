@@ -23,6 +23,7 @@ const LetterPassword = ({ setShowModal }: IProps) => {
         <label className="block" htmlFor="pw">
           <p className="mb-1">비밀번호를 입력하세요</p>
           <input
+            placeholder="password"
             type="password"
             className="w-1/1"
             value={password}

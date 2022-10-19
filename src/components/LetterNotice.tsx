@@ -1,6 +1,10 @@
 import React from "react";
 
-const LetterNotice = () => {
+interface IProps {
+  setShowModal: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const LetterNotice = ({ setShowModal }: IProps) => {
   const notices: string[] = [
     "아래 '사진 업로드'를 클릭해 사진을 업로드 해주세요. 닮은 연예인을 찾아드립니다.",
     "롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.",
@@ -26,7 +30,10 @@ const LetterNotice = () => {
         ))}
       </div>
       <div className="absolute right-5 bottom-5">
-        <button className="py-1 px-3 rounded-lg shadow-md bg-orange-300">
+        <button
+          className="py-1 px-3 rounded-lg shadow-md bg-orange-300"
+          onClick={() => setShowModal("쓰기")}
+        >
           사진 업로드
         </button>
       </div>
