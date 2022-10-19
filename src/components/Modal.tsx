@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IProps {
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<string>>;
   element: JSX.Element;
 }
 
@@ -13,7 +13,7 @@ const Modal = ({ setShowModal, element }: IProps) => {
   return (
     <div
       className="absolute w-screen h-screen bg-black/70"
-      onClick={() => setShowModal(false)}
+      onClick={() => setShowModal("닫기")}
     >
       <span onClick={(e) => blockEvent(e)}>{element}</span>
     </div>

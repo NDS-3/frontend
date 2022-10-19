@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 
 interface IProps {
-  setShowPwModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowLetterModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const LetterPassword = ({ setShowPwModal, setShowLetterModal }: IProps) => {
+const LetterPassword = ({ setShowModal }: IProps) => {
   const [password, setPassword] = useState("");
   const checkPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(password + " 맞는지 확인");
+    alert(password + "를 담아서 요청 보내기");
     setPassword("");
-    setShowPwModal(false);
-    setShowLetterModal(true);
+    setShowModal("비번");
+    // 맞으면 id, imageUrl, content 담아 보내고 => 편지 열기
+    setShowModal("읽기");
+    // 틀리면 idx: -1, 나머지는 빈문자열 담아 보내고 => 틀림 알려주고 모달 닫아버리기
+    // alert("비밀번호가 틀렸습니다")
   };
 
   return (

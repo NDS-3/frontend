@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import LetterContent from "../components/LetterContent";
 import LetterPassword from "../components/LetterPassword";
+import LetterNotice from "../components/LetterNotice";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 
 interface Istate {
@@ -14,7 +15,6 @@ interface Istate {
     id: number;
     imageUrl: string;
     content: string;
-    password: string;
   };
 }
 
@@ -24,8 +24,8 @@ const AllRollingPapers = () => {
   const [pumpkinContent, setPumpkinContent] = useState<Istate["pumpkin"]>();
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
-  const [showPwModal, setShowPwModal] = useState(false);
-  const [showLetterModal, setShowLetterModal] = useState(false);
+  // 닫기, 안내, 쓰기, 비번, 읽기
+  const [showModal, setShowModal] = useState("닫기");
 
   useEffect(() => {
     setUserName(personalPath || "user");
@@ -38,10 +38,16 @@ const AllRollingPapers = () => {
   };
 
   const showLetter = (i: number) => {
-    setShowPwModal(true);
+    // 비밀번호 확인용 모달 열기
+    setShowModal("비번");
+    // 비밀번호 맞으면 롤링페이퍼 내용 가져오기
     console.log(i + "로 알맞는 롤링페이퍼 내용 가져오기");
-    // pumpkinId를 담아서 편지 content 받아오도록 요청
     setPumpkinContent(dummyPumpkin);
+  };
+
+  const writeLetter = (i: number) => {
+    console.log(i + "번째 편지쓸래");
+    setShowModal("안내");
   };
 
   return (
@@ -58,17 +64,26 @@ const AllRollingPapers = () => {
       <div className="flex flex-wrap w-4/5 mx-auto justify-center">
         {pumpkinList.map((v, i) => (
           <div key={i} className="basis-1/5 p-10">
-            <img
-              src={`${process.env.PUBLIC_URL}/img/pumpkin01.png`}
-              alt="empty"
-              className="mx-auto"
-              onClick={() => showLetter(i)}
-            />
+            {v.imageUrl.length > 0 ? (
+              <img
+                src={`${process.env.PUBLIC_URL}/img/full.png`}
+                alt="full"
+                className="mx-auto"
+                onClick={() => showLetter(i)}
+              />
+            ) : (
+              <img
+                src={`${process.env.PUBLIC_URL}/img/empty.png`}
+                alt="empty"
+                className="mx-auto"
+                onClick={() => writeLetter(i)}
+              />
+            )}
           </div>
         ))}
       </div>
-      <div className="absolute inset-x-0 bottom-20">
-        <p className="text-white text-2xl mb-5">링크를 공유하세요</p>
+      <div className="mt-5">
+        <p className="text-white text-2xl">링크를 공유하세요</p>
         <button
           className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold"
           onClick={() => copyLink()}
@@ -76,22 +91,20 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      {showPwModal && (
+      {showModal !== "닫기" && (
         <Modal
-          setShowModal={setShowPwModal}
-          element={
-            <LetterPassword
-              setShowPwModal={setShowPwModal}
-              setShowLetterModal={setShowLetterModal}
-            />
-          }
+          setShowModal={setShowModal}
+          element={<LetterPassword setShowModal={setShowModal} />}
         />
       )}
-      {showLetterModal && (
+      {showModal === "읽기" && (
         <Modal
-          setShowModal={setShowLetterModal}
-          element={<LetterContent setShowLetterModal={setShowLetterModal} />}
+          setShowModal={setShowModal}
+          element={<LetterContent letter={pumpkinContent} />}
         />
+      )}
+      {showModal === "안내" && (
+        <Modal setShowModal={setShowModal} element={<LetterNotice />} />
       )}
     </div>
   );
