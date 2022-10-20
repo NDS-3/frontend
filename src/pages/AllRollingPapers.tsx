@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 const AllRollingPapers = () => {
   interface Istate {
@@ -61,6 +62,7 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
+      <button onClick={() => Auth.signOut()}>로그아웃</button>
     </div>
   );
 };

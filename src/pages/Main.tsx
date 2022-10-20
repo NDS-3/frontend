@@ -1,11 +1,11 @@
-import React from "react";
-import LetterContent from "../components/LetterContent";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
-    <div className="main">
-      <LetterContent />
-    </div>
+    <>
+      <div></div>
+      <Link to="/signin">Sign In</Link>
+    </>
   );
 };
 
