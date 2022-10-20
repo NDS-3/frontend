@@ -20,5 +20,5 @@ export const dummyPumpkin = {
   imageUrl:
     "https://images.chosun.com/resizer/aRkMdmnf2bEYLwNOTLe2ZvrHDnQ=/540x405/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/YIARR5OJCFAG5AGRYZYWOGTQKE.jpg",
   content:
-    "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지. 오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 이건 거의 내 일기네",
+    "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지. 오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 왜 벌써 목요일이지",
 };

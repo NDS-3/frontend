@@ -4,7 +4,7 @@ interface IProps {
   setShowModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const LetterPassword = ({ setShowModal }: IProps) => {
+const Password = ({ setShowModal }: IProps) => {
   const [password, setPassword] = useState("");
   const checkPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,4 +39,4 @@ const LetterPassword = ({ setShowModal }: IProps) => {
   );
 };
 
-export default LetterPassword;
+export default Password;

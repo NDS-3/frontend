@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Modal from "../components/Modal";
-import LetterContent from "../components/LetterContent";
-import LetterPassword from "../components/LetterPassword";
-import LetterNotice from "../components/LetterNotice";
-import LetterWrite from "../components/LetterWrite";
+import _Content from "../components/_Content";
+import Password from "../components/Password";
+import _Notice from "../components/_Notice";
+import _Write from "../components/_Write";
+import Letter from "../components/Letter";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 
 interface Istate {
@@ -39,9 +40,7 @@ const AllRollingPapers = () => {
   };
 
   const showLetter = (i: number) => {
-    // 비밀번호 확인용 모달 열기
     setShowModal("비번");
-    // 비밀번호 맞으면 롤링페이퍼 내용 가져오기
     console.log(i + "로 알맞는 롤링페이퍼 내용 가져오기");
     setPumpkinContent(dummyPumpkin);
   };
@@ -54,13 +53,42 @@ const AllRollingPapers = () => {
   const ModalCase = () => {
     switch (showModal) {
       case "비번":
-        return <LetterPassword setShowModal={setShowModal} />;
+        return <Password setShowModal={setShowModal} />;
       case "읽기":
-        return <LetterContent letter={pumpkinContent} />;
+        return (
+          <Letter
+            element={
+              <_Content setShowModal={setShowModal} letter={pumpkinContent} />
+            }
+          />
+        );
       case "안내":
-        return <LetterNotice setShowModal={setShowModal} />;
+        return <Letter element={<_Notice setShowModal={setShowModal} />} />;
       case "쓰기":
-        return <LetterWrite setShowModal={setShowModal} />;
+        return (
+          <Letter
+            element={
+              <_Write
+                createOrUpdate="create"
+                setShowModal={setShowModal}
+                setLetter={setPumpkinContent}
+              />
+            }
+          />
+        );
+      case "수정":
+        return (
+          <Letter
+            element={
+              <_Write
+                createOrUpdate="update"
+                setShowModal={setShowModal}
+                letter={pumpkinContent}
+                setLetter={setPumpkinContent}
+              />
+            }
+          />
+        );
       default:
         return null;
     }
