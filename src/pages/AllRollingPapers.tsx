@@ -6,7 +6,9 @@ import Password from "../components/Password";
 import _Notice from "../components/_Notice";
 import _Write from "../components/_Write";
 import Letter from "../components/Letter";
+import PageController from "../components/PageController";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
+import Characters from "../components/Characters";
 
 interface Istate {
   pumpkinList: {
@@ -22,18 +24,29 @@ interface Istate {
 
 const AllRollingPapers = () => {
   const [userName, setUserName] = useState("일이삼");
+  const [originList, setOriginList] = useState<Istate["pumpkinList"][]>([]);
   const [pumpkinList, setpumpkinList] = useState<Istate["pumpkinList"][]>([]);
   const [pumpkinContent, setPumpkinContent] = useState<Istate["pumpkin"]>();
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
-  // 닫기, 안내, 쓰기, 비번, 읽기
+  // 닫기, 안내, 쓰기, 비번, 읽기, 수정
   const [showModal, setShowModal] = useState("닫기");
+  const [pumpkinPage, setPumpkinPage] = useState(0);
+
+  const getOriginList = () => {
+    setOriginList(dummyPumpkinList);
+  };
 
   useEffect(() => {
     setUserName(personalPath || "user");
-    setpumpkinList(dummyPumpkinList);
+    getOriginList();
     setMyLink("http://localhost:3000/" + personalPath);
   }, []);
+
+  useEffect(() => {
+    const start = pumpkinPage * 10;
+    setpumpkinList(originList.slice(start, start + 10));
+  }, [originList, pumpkinPage]);
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(myLink);
@@ -48,6 +61,11 @@ const AllRollingPapers = () => {
   const writeLetter = (i: number) => {
     console.log(i + "번째 편지쓸래");
     setShowModal("안내");
+  };
+
+  const clickPumpkin = (flag: boolean, i: number) => {
+    if (flag) return showLetter(i);
+    return writeLetter(i);
   };
 
   const ModalCase = () => {
@@ -89,6 +107,8 @@ const AllRollingPapers = () => {
             }
           />
         );
+      case "선택":
+        return <Characters />;
       default:
         return null;
     }
@@ -101,30 +121,36 @@ const AllRollingPapers = () => {
         alt="bg"
         className="absolute left-0 top-0 -z-50 h-full w-full"
       />
+      <PageController
+        setCurrentPage={setPumpkinPage}
+        currentPage={pumpkinPage}
+      />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
         <p className="pb-4">{userName}님의 롤링페이퍼입니다.</p>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="flex flex-wrap w-4/5 mx-auto justify-center">
-        {pumpkinList.map((v, i) => (
-          <div key={i} className="basis-1/5 p-10">
-            {v.imageUrl.length > 0 ? (
+        {pumpkinList.map((v) => {
+          const flag = v.imageUrl.length > 0;
+          const imageName = flag ? "full" : "empty";
+          return (
+            <div key={v.pumpkinId} className="relative basis-1/5 p-10">
               <img
-                src={`${process.env.PUBLIC_URL}/img/full.png`}
+                src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt="full"
                 className="mx-auto"
-                onClick={() => showLetter(i)}
+                onClick={() => clickPumpkin(flag, v.pumpkinId)}
               />
-            ) : (
-              <img
-                src={`${process.env.PUBLIC_URL}/img/empty.png`}
-                alt="empty"
-                className="mx-auto"
-                onClick={() => writeLetter(i)}
-              />
-            )}
-          </div>
-        ))}
+              {flag && (
+                <img
+                  className="absolute left-0 top-0"
+                  src={v.imageUrl}
+                  alt="character"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="mt-5">
         <p className="text-white text-2xl">링크를 공유하세요</p>
@@ -135,7 +161,7 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      {showModal !== "닫기" && ModalCase && (
+      {showModal !== "닫기" && (
         <Modal setShowModal={setShowModal} element={<ModalCase />} />
       )}
     </div>

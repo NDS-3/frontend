@@ -23,7 +23,7 @@ const _Notice = ({ setShowModal }: IProps) => {
       <div className="mb-[20px] mr-[20px]">
         <button
           className="py-2 px-5 rounded-lg shadow-md bg-orange-300"
-          onClick={() => setShowModal("쓰기")}
+          onClick={() => setShowModal("선택")}
         >
           캐릭터 선택
         </button>
