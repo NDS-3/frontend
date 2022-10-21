@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import awsExports from "./aws-exports";
 import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,11 +15,15 @@ const root = ReactDOM.createRoot(
 
 Amplify.configure(awsExports);
 
+export const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
     <RecoilRoot>
       <BrowserRouter>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </BrowserRouter>
     </RecoilRoot>
   </React.StrictMode>
