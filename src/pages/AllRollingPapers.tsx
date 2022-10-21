@@ -1,60 +1,159 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import Modal from "../components/Modal";
+import _Content from "../components/_Content";
+import Password from "../components/Password";
+import _Notice from "../components/_Notice";
+import _Write from "../components/_Write";
+import Letter from "../components/Letter";
+import PageController from "../components/PageController";
+import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
+import Characters from "../components/Characters";
+
+interface Istate {
+  pumpkinList: {
+    pumpkinId: number;
+    imageUrl: string;
+  };
+  pumpkin: {
+    id: number;
+    imageUrl: string;
+    content: string;
+  };
+}
 
 const AllRollingPapers = () => {
-  interface Istate {
-    pumpkins: {
-      pumpkinId: number;
-      character: string;
-    };
-  }
   const [userName, setUserName] = useState("일이삼");
-  const [pumpkins, setPumpkins] = useState<Istate["pumpkins"][]>([]);
+  const [originList, setOriginList] = useState<Istate["pumpkinList"][]>([]);
+  const [pumpkinList, setpumpkinList] = useState<Istate["pumpkinList"][]>([]);
+  const [pumpkinContent, setPumpkinContent] = useState<Istate["pumpkin"]>();
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
+  // 닫기, 안내, 쓰기, 비번, 읽기, 수정
+  const [showModal, setShowModal] = useState("닫기");
+  const [pumpkinPage, setPumpkinPage] = useState(0);
+
+  const getOriginList = () => {
+    setOriginList(dummyPumpkinList);
+  };
 
   useEffect(() => {
     setUserName(personalPath || "user");
-    const tmp = [
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-      { pumpkinId: 0, character: "" },
-    ];
-    setPumpkins(tmp);
+    getOriginList();
     setMyLink("http://localhost:3000/" + personalPath);
   }, []);
+
+  useEffect(() => {
+    const start = pumpkinPage * 10;
+    setpumpkinList(originList.slice(start, start + 10));
+  }, [originList, pumpkinPage]);
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(myLink);
   };
 
+  const showLetter = (i: number) => {
+    setShowModal("비번");
+    console.log(i + "로 알맞는 롤링페이퍼 내용 가져오기");
+    setPumpkinContent(dummyPumpkin);
+  };
+
+  const writeLetter = (i: number) => {
+    console.log(i + "번째 편지쓸래");
+    setShowModal("안내");
+  };
+
+  const clickPumpkin = (flag: boolean, i: number) => {
+    if (flag) return showLetter(i);
+    return writeLetter(i);
+  };
+
+  const ModalCase = () => {
+    switch (showModal) {
+      case "비번":
+        return <Password setShowModal={setShowModal} />;
+      case "읽기":
+        return (
+          <Letter
+            element={
+              <_Content setShowModal={setShowModal} letter={pumpkinContent} />
+            }
+          />
+        );
+      case "안내":
+        return <Letter element={<_Notice setShowModal={setShowModal} />} />;
+      case "쓰기":
+        return (
+          <Letter
+            element={
+              <_Write
+                createOrUpdate="create"
+                setShowModal={setShowModal}
+                setLetter={setPumpkinContent}
+              />
+            }
+          />
+        );
+      case "수정":
+        return (
+          <Letter
+            element={
+              <_Write
+                createOrUpdate="update"
+                setShowModal={setShowModal}
+                letter={pumpkinContent}
+                setLetter={setPumpkinContent}
+              />
+            }
+          />
+        );
+      case "선택":
+        return <Characters />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="bg-background01 h-screen w-screen relative flex flex-col justify-center text-center">
+    <div className="h-screen w-screen relative flex flex-col justify-center text-center">
+      <img
+        src={`${process.env.PUBLIC_URL}/img/background02.png`}
+        alt="bg"
+        className="absolute left-0 top-0 -z-50 h-full w-full"
+      />
+      <PageController
+        setCurrentPage={setPumpkinPage}
+        currentPage={pumpkinPage}
+      />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
         <p className="pb-4">{userName}님의 롤링페이퍼입니다.</p>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="flex flex-wrap w-4/5 mx-auto justify-center">
-        {pumpkins.map((v, i) => (
-          <div key={i} className="basis-1/5 p-10">
-            <img
-              src={`${process.env.PUBLIC_URL}/img/pumpkin01.png`}
-              alt="empty"
-              className="mx-auto"
-            />
-          </div>
-        ))}
+        {pumpkinList.map((v) => {
+          const flag = v.imageUrl.length > 0;
+          const imageName = flag ? "full" : "empty";
+          return (
+            <div key={v.pumpkinId} className="relative basis-1/5 p-10">
+              <img
+                src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
+                alt="full"
+                className="mx-auto"
+                onClick={() => clickPumpkin(flag, v.pumpkinId)}
+              />
+              {flag && (
+                <img
+                  className="absolute left-0 top-0"
+                  src={v.imageUrl}
+                  alt="character"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
-      <div className="absolute inset-x-0 bottom-20">
-        <p className="text-white text-2xl mb-5">링크를 공유하세요</p>
+      <div className="mt-5">
+        <p className="text-white text-2xl">링크를 공유하세요</p>
         <button
           className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold"
           onClick={() => copyLink()}
@@ -62,7 +161,9 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      <button onClick={() => Auth.signOut()}>로그아웃</button>
+      {showModal !== "닫기" && (
+        <Modal setShowModal={setShowModal} element={<ModalCase />} />
+      )}
     </div>
   );
 };
