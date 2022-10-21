@@ -31,10 +31,6 @@ const _Write = ({
     setNewLetter({ ...letter });
   }, []);
 
-  const sendLetter = () => {
-    createOrUpdate === "create" ? createLetter() : updateLetter();
-  };
-
   const createLetter = () => {
     const data = {
       password: inputPassword,
