@@ -1,4 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 export interface AllLetter {
   letterId: number;
@@ -11,14 +14,10 @@ export interface EachLetter {
   content: string;
 }
 
-export const originLetterListState = atom<AllLetter[]>({
-  key: "originLetterList",
-  default: [],
-});
-
 export const viewLetterListState = atom<AllLetter[]>({
   key: "viewLetterList",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const letterState = atom<EachLetter>({

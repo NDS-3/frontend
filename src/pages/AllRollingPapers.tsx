@@ -10,16 +10,13 @@ import Letter from "../components/Letter";
 import PageController from "../components/PageController";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 import Characters from "../components/Characters";
-import {
-  letterState,
-  originLetterListState,
-  viewLetterListState,
-} from "../recoil/posts";
+import { letterState, viewLetterListState } from "../recoil/posts";
+import { userState } from "../recoil/user";
+import { getLetterList } from "../api/letter";
 
 const AllRollingPapers = () => {
-  const [userName, setUserName] = useState("일이삼");
-  const [originList, setOriginList] = useRecoilState(originLetterListState);
-  const [viewList, setpumpkinList] = useRecoilState(viewLetterListState);
+  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [pumpkinList, setPumpkinList] = useRecoilState(viewLetterListState);
   const [pumpkinContent, setPumpkinContent] = useRecoilState(letterState);
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
@@ -27,20 +24,15 @@ const AllRollingPapers = () => {
   const [showModal, setShowModal] = useState("닫기");
   const [pumpkinPage, setPumpkinPage] = useState(0);
 
-  const getOriginList = () => {
-    setOriginList(dummyPumpkinList);
-  };
-
   useEffect(() => {
-    setUserName(personalPath || "user");
-    getOriginList();
+    setUserInfo({ ...userInfo, url: personalPath || "" });
+    setPumpkinList(dummyPumpkinList);
     setMyLink("http://localhost:3000/" + personalPath);
   }, []);
 
   useEffect(() => {
-    const start = pumpkinPage * 10;
-    setpumpkinList(originList.slice(start, start + 10));
-  }, [originList, pumpkinPage]);
+    setPumpkinList(dummyPumpkinList);
+  }, [pumpkinPage]);
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(myLink);
@@ -80,11 +72,7 @@ const AllRollingPapers = () => {
         return (
           <Letter
             element={
-              <_Write
-                createOrUpdate="create"
-                setShowModal={setShowModal}
-                setLetter={setPumpkinContent}
-              />
+              <_Write createOrUpdate="create" setShowModal={setShowModal} />
             }
           />
         );
@@ -92,24 +80,19 @@ const AllRollingPapers = () => {
         return (
           <Letter
             element={
-              <_Write
-                createOrUpdate="update"
-                setShowModal={setShowModal}
-                letter={pumpkinContent}
-                setLetter={setPumpkinContent}
-              />
+              <_Write createOrUpdate="update" setShowModal={setShowModal} />
             }
           />
         );
-      case "선택":
-        return <Characters />;
+      case "쓰기선택" || "수정선택":
+        return <Characters setShowModal={setShowModal} />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="h-screen w-screen relative flex flex-col justify-center text-center">
+    <div className="h-screen w-screen relative flex flex-col justify-evenly text-center">
       <img
         src={`${process.env.PUBLIC_URL}/img/background02.png`}
         alt="bg"
@@ -120,24 +103,27 @@ const AllRollingPapers = () => {
         currentPage={pumpkinPage}
       />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
-        <p className="pb-4">{userName}님의 롤링페이퍼입니다.</p>
+        <p className="pb-4">{userInfo.userName}님의 롤링페이퍼입니다.</p>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="w-4/5 mx-auto grid grid-cols-5">
-        {viewList.map((v) => {
+        {pumpkinList.map((v) => {
           const flag = v.stickerUrl.length > 0;
           const imageName = flag ? "full" : "empty";
           return (
-            <div key={v.letterId} className="m-1 relative h-1/1 aspect-square">
+            <div
+              key={v.letterId}
+              className="w-1/2 m-1 relative h-1/1 aspect-square"
+            >
               <img
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt={imageName}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 aspect-square"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square"
                 onClick={() => clickPumpkin(flag, v.letterId)}
               />
               {flag && (
                 <img
-                  className="absolute left-1/2 top-2/3 pb-5 -translate-x-1/2 -translate-y-1/2 w-1/2"
+                  className="absolute left-1/2 top-2/3 pb-2 -translate-x-1/2 -translate-y-1/2 w-3/5"
                   src={v.stickerUrl}
                   alt="character"
                   onClick={() => clickPumpkin(flag, v.letterId)}

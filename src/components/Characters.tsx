@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { stickerListState, Sticker } from "../recoil/stickers";
+import { letterState } from "../recoil/posts";
 import PageController from "./PageController";
 import { dummyIconList } from "../dummy";
 
-interface Istate {
-  icon: {
-    id: number;
-    url: string;
-  };
+interface IProps {
+  setShowModal: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Characters = () => {
+interface Istate {
+  icon: Sticker;
+}
+
+const Characters = ({ setShowModal }: IProps) => {
   const [page, setPage] = useState(0);
-  const [originIcons, setOriginIcons] = useState<Istate["icon"][]>([]);
+  const [originIcons, setOriginIcons] = useRecoilState(stickerListState);
+  const [letter, setLetter] = useRecoilState(letterState);
   const [viewIcons, setViewIcons] = useState<Istate["icon"][]>([]);
 
   useEffect(() => {
@@ -23,17 +28,28 @@ const Characters = () => {
     setViewIcons(originIcons.slice(start, start + 10));
   }, [originIcons]);
 
+  const clickSticker = (url: string) => {
+    setLetter({ ...letter, stickerUrl: url });
+    setShowModal("쓰기");
+  };
+
   return (
     <div className="w-2/3 h-2/3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-5 bg-white rounded-lg">
-      <p>캐릭터를 선택하세요!</p>
-      <div className="grid grid-cols-5">
-        {viewIcons.map((v) => (
-          <img key={v.id} className="p-1" src={v.url} alt={`${v.id}pic`} />
-        ))}
+      <div className="h-full">
+        <p>캐릭터를 선택하세요!</p>
+        <div className="grid grid-cols-5 absolute top-1/2 -translate-y-1/2">
+          {viewIcons.map((v) => (
+            <img
+              key={v.stickerId}
+              className="m-5 mb-10"
+              src={v.stickerUrl}
+              alt={`${v.stickerId}pic`}
+              onClick={() => clickSticker(v.stickerUrl)}
+            />
+          ))}
+        </div>
       </div>
-      <div className="relative">
-        <PageController currentPage={page} setCurrentPage={setPage} />
-      </div>
+      <PageController currentPage={page} setCurrentPage={setPage} />
     </div>
   );
 };
