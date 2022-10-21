@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { EachLetter } from "../recoil/posts";
+import { SetterOrUpdater } from "recoil";
 
 interface IProps {
   setShowModal: React.Dispatch<React.SetStateAction<string>>;
-  setLetter: React.Dispatch<
-    React.SetStateAction<
-      | {
-          id: number;
-          imageUrl: string;
-          content: string;
-        }
-      | undefined
-    >
-  >;
-  letter: {
-    id: number;
-    imageUrl: string;
-    content: string;
-  };
+  setLetter: SetterOrUpdater<EachLetter>;
+  letter: EachLetter;
   createOrUpdate: string;
 }
 
 interface Istate {
-  newLetter: {
-    id: number;
-    imageUrl: string;
-    content: string;
-  };
+  newLetter: EachLetter;
 }
 
 const _Write = ({
@@ -37,8 +22,8 @@ const _Write = ({
   const [inputPassword, setInputPassword] = useState("");
 
   const [newLetter, setNewLetter] = useState<Istate["newLetter"]>({
-    id: -1,
-    imageUrl: "",
+    letterId: -1,
+    stickerUrl: "",
     content: "",
   });
 
@@ -46,22 +31,26 @@ const _Write = ({
     setNewLetter({ ...letter });
   }, []);
 
-  const sendLetter = () => {
-    setLetter(newLetter);
-    createOrUpdate === "create" ? createLetter() : updateLetter();
-  };
-
   const createLetter = () => {
-    console.log("편지보내요");
-    console.log("password:", inputPassword);
-    console.log("newLetter:", newLetter);
+    const data = {
+      password: inputPassword,
+      stickerUrl: newLetter.stickerUrl,
+      content: newLetter.content,
+    };
+    // ✔return 받은 값으로 setLetter() 하고 읽기로 모달 바꿔주기
+    console.log("POST data:", data);
     setShowModal("닫기");
   };
 
   const updateLetter = () => {
-    console.log("편지 수정합니다");
-    console.log("newLetter:", newLetter);
-    setShowModal("닫기");
+    const data = {
+      letterId: letter.letterId,
+      stickerUrl: newLetter.stickerUrl,
+      content: newLetter.content,
+    };
+    setLetter(data);
+    console.log("PUT data:", data);
+    setShowModal("읽기");
   };
 
   return (
@@ -89,11 +78,12 @@ const _Write = ({
         />
       </div>
       <div className="mb-[20px] mr-[20px] text-end">
-        <button
-          className="py-1 px-3 rounded-lg shadow-md bg-orange-300"
-          onClick={() => sendLetter()}
-        >
-          {createOrUpdate === "create" ? "편지 보내기" : "편지 고치기"}
+        <button className="py-1 px-3 rounded-lg shadow-md bg-orange-300">
+          {createOrUpdate === "create" ? (
+            <span onClick={() => createLetter()}>편지 보내기</span>
+          ) : (
+            <span onClick={() => updateLetter()}>편지 고치기</span>
+          )}
         </button>
       </div>
     </div>

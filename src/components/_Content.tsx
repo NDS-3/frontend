@@ -1,22 +1,24 @@
 import React from "react";
+import { EachLetter } from "../recoil/posts";
 
 interface IProps {
   setShowModal: React.Dispatch<React.SetStateAction<string>>;
-  letter?: {
-    id: number;
-    imageUrl: string;
-    content: string;
-  };
+  letter: EachLetter;
 }
 
 const _Content = ({ setShowModal, letter }: IProps) => {
   const deleteLetter = () => {
-    console.log("이 편지를 지우자");
-    setShowModal("닫기");
+    const answer = window.confirm("삭제?");
+    if (answer) {
+      console.log("DELETE id:", letter.letterId);
+      setShowModal("닫기");
+    }
   };
+
   const chnageToUpdateModal = () => {
     setShowModal("수정");
   };
+
   return (
     <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-white text-xl">
       <img
