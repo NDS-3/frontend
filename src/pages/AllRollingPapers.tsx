@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import _Content from "../components/_Content";
@@ -9,24 +10,17 @@ import Letter from "../components/Letter";
 import PageController from "../components/PageController";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
 import Characters from "../components/Characters";
-
-interface Istate {
-  pumpkinList: {
-    pumpkinId: number;
-    imageUrl: string;
-  };
-  pumpkin: {
-    id: number;
-    imageUrl: string;
-    content: string;
-  };
-}
+import {
+  letterState,
+  originLetterListState,
+  viewLetterListState,
+} from "../recoil/posts";
 
 const AllRollingPapers = () => {
   const [userName, setUserName] = useState("일이삼");
-  const [originList, setOriginList] = useState<Istate["pumpkinList"][]>([]);
-  const [pumpkinList, setpumpkinList] = useState<Istate["pumpkinList"][]>([]);
-  const [pumpkinContent, setPumpkinContent] = useState<Istate["pumpkin"]>();
+  const [originList, setOriginList] = useRecoilState(originLetterListState);
+  const [viewList, setpumpkinList] = useRecoilState(viewLetterListState);
+  const [pumpkinContent, setPumpkinContent] = useRecoilState(letterState);
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
   // 닫기, 안내, 쓰기, 비번, 읽기, 수정
@@ -129,23 +123,24 @@ const AllRollingPapers = () => {
         <p className="pb-4">{userName}님의 롤링페이퍼입니다.</p>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
-      <div className="flex flex-wrap w-4/5 mx-auto justify-center">
-        {pumpkinList.map((v) => {
-          const flag = v.imageUrl.length > 0;
+      <div className="w-4/5 mx-auto grid grid-cols-5">
+        {viewList.map((v) => {
+          const flag = v.stickerUrl.length > 0;
           const imageName = flag ? "full" : "empty";
           return (
-            <div key={v.pumpkinId} className="relative basis-1/5 p-10">
+            <div key={v.letterId} className="m-1 relative h-1/1 aspect-square">
               <img
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
-                alt="full"
-                className="mx-auto"
-                onClick={() => clickPumpkin(flag, v.pumpkinId)}
+                alt={imageName}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 aspect-square"
+                onClick={() => clickPumpkin(flag, v.letterId)}
               />
               {flag && (
                 <img
-                  className="absolute left-0 top-0"
-                  src={v.imageUrl}
+                  className="absolute left-1/2 top-2/3 pb-5 -translate-x-1/2 -translate-y-1/2 w-1/2"
+                  src={v.stickerUrl}
                   alt="character"
+                  onClick={() => clickPumpkin(flag, v.letterId)}
                 />
               )}
             </div>

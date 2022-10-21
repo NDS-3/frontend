@@ -1,129 +1,129 @@
 export const dummyPumpkinList = [
   {
-    pumpkinId: 0,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
+    letterId: 0,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
   },
   {
-    pumpkinId: 1,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
+    letterId: 1,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
   },
   {
-    pumpkinId: 2,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
+    letterId: 2,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
   },
   {
-    pumpkinId: 3,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
+    letterId: 3,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
   },
   {
-    pumpkinId: 4,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
+    letterId: 4,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
   },
   {
-    pumpkinId: 5,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
+    letterId: 5,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
   },
   {
-    pumpkinId: 6,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
+    letterId: 6,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
   },
   {
-    pumpkinId: 7,
-    imageUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
+    letterId: 7,
+    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
   },
   {
-    pumpkinId: 8,
-    imageUrl: "",
+    letterId: 8,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 9,
-    imageUrl: "",
+    letterId: 9,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 10,
-    imageUrl: "",
+    letterId: 10,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 11,
-    imageUrl: "",
+    letterId: 11,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 12,
-    imageUrl: "",
+    letterId: 12,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 13,
-    imageUrl: "",
+    letterId: 13,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 14,
-    imageUrl: "",
+    letterId: 14,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 15,
-    imageUrl: "",
+    letterId: 15,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 16,
-    imageUrl: "",
+    letterId: 16,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 17,
-    imageUrl: "",
+    letterId: 17,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 18,
-    imageUrl: "",
+    letterId: 18,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 19,
-    imageUrl: "",
+    letterId: 19,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 20,
-    imageUrl: "",
+    letterId: 20,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 21,
-    imageUrl: "",
+    letterId: 21,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 22,
-    imageUrl: "",
+    letterId: 22,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 23,
-    imageUrl: "",
+    letterId: 23,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 24,
-    imageUrl: "",
+    letterId: 24,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 25,
-    imageUrl: "",
+    letterId: 25,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 26,
-    imageUrl: "",
+    letterId: 26,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 27,
-    imageUrl: "",
+    letterId: 27,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 28,
-    imageUrl: "",
+    letterId: 28,
+    stickerUrl: "",
   },
   {
-    pumpkinId: 29,
-    imageUrl: "",
+    letterId: 29,
+    stickerUrl: "",
   },
 ];
 
 export const dummyPumpkin = {
-  id: 0,
-  imageUrl:
+  letterId: 0,
+  stickerUrl:
     "https://images.chosun.com/resizer/aRkMdmnf2bEYLwNOTLe2ZvrHDnQ=/540x405/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/YIARR5OJCFAG5AGRYZYWOGTQKE.jpg",
   content:
     "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지. 오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 왜 벌써 목요일이지",
