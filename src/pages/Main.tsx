@@ -1,12 +1,8 @@
 import React from "react";
-import LetterContent from "../components/LetterContent";
+import LetterContent from "../components/_Content";
 
 const Main = () => {
-  return (
-    <div className="main">
-      <LetterContent />
-    </div>
-  );
+  return <div className="main"></div>;
 };
 
 export default Main;
