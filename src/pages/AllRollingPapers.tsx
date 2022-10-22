@@ -13,6 +13,7 @@ import _Content from "../components/_Content";
 import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
+import ChangeName from "../components/ChangeName";
 
 const AllRollingPapers = () => {
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
@@ -63,7 +64,7 @@ const AllRollingPapers = () => {
   const ModalCase = () => {
     switch (showModal) {
       case "비번":
-        return <Password setShowModal={setShowModal} />;
+        return <Password />;
       case "읽기":
         return <Letter element={<_Content />} />;
       case "안내":
@@ -72,8 +73,16 @@ const AllRollingPapers = () => {
         return <Letter element={<_Write createOrUpdate={createOrUpdate} />} />;
       case "수정":
         return <Letter element={<_Write createOrUpdate={createOrUpdate} />} />;
+      case "이름":
+        return <ChangeName />;
       default:
         return null;
+    }
+  };
+
+  const changeName = () => {
+    if (userInfo.userId < 0) {
+      setShowModal("이름");
     }
   };
 
@@ -89,7 +98,10 @@ const AllRollingPapers = () => {
         currentPage={pumpkinPage}
       />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
-        <p className="pb-4">{userInfo.userName}님의 롤링페이퍼입니다.</p>
+        <div className="pb-4">
+          <span onClick={() => changeName()}>{userInfo.userName}</span>
+          <span>님의 롤링페이퍼입니다.</span>
+        </div>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="w-4/5 mx-auto grid grid-cols-5">

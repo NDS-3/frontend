@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { getLetterWithPassword } from "../api/letter";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ownerState } from "../recoil/user";
+import { showModalState } from "../recoil/modal";
 
-interface IProps {
-  setShowModal: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const Password = ({ setShowModal }: IProps) => {
+const Password = () => {
   const [password, setPassword] = useState("");
-  const [ownerInfo] = useRecoilState(ownerState);
+  const [userInfo] = useRecoilState(ownerState);
+  const setShowModal = useSetRecoilState(showModalState);
 
   const checkPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // getLetterWithPassword(ownerInfo.userId, )
+    // getLetterWithPassword(userInfo.userId, )
     alert(password + "를 담아서 요청 보내기");
     setPassword("");
     // 맞으면 id, imageUrl, content 담아 보내고 => 편지 열기
