@@ -9,13 +9,13 @@ export interface Sticker {
 }
 
 export const stickerListState = atom<Sticker[]>({
-  key: "stickerList",
+  key: "stickerListState",
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
 
 export const slectedStickerState = atom<Sticker>({
-  key: "sticker",
+  key: "slectedStickerState",
   default: {
     stickerId: -1,
     stickerUrl: "",

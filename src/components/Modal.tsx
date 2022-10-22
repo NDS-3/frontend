@@ -1,11 +1,15 @@
 import React from "react";
+import { useSetRecoilState } from "recoil";
+import { showModalState, showStickerModalState } from "../recoil/modal";
 
 interface IProps {
-  setShowModal: React.Dispatch<React.SetStateAction<string>>;
   element: JSX.Element;
 }
 
-const Modal = ({ setShowModal, element }: IProps) => {
+const Modal = ({ element }: IProps) => {
+  const setShowModal = useSetRecoilState(showModalState);
+  const setShowStickersModal = useSetRecoilState(showStickerModalState);
+
   const blockEvent = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     e.stopPropagation();
   };
@@ -13,7 +17,10 @@ const Modal = ({ setShowModal, element }: IProps) => {
   return (
     <div
       className="absolute w-screen h-screen bg-black/70"
-      onClick={() => setShowModal("닫기")}
+      onClick={() => {
+        setShowModal("닫기");
+        setShowStickersModal(false);
+      }}
     >
       <span onClick={(e) => blockEvent(e)}>{element}</span>
     </div>

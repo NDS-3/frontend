@@ -15,13 +15,13 @@ export interface EachLetter {
 }
 
 export const viewLetterListState = atom<AllLetter[]>({
-  key: "viewLetterList",
+  key: "viewLetterListState",
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
 
 export const letterState = atom<EachLetter>({
-  key: "letter",
+  key: "letterState",
   default: {
     letterId: -1,
     stickerUrl: "",

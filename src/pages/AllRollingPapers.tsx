@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
-import Modal from "../components/Modal";
-import _Content from "../components/_Content";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { letterState, viewLetterListState } from "../recoil/posts";
+import { showModalState, showStickerModalState } from "../recoil/modal";
+import { ownerState } from "../recoil/user";
+import Characters from "../components/Characters";
 import Password from "../components/Password";
+import Modal from "../components/Modal";
 import _Notice from "../components/_Notice";
-import _Write from "../components/_Write";
 import Letter from "../components/Letter";
+import _Content from "../components/_Content";
+import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import { dummyPumpkin, dummyPumpkinList } from "../dummy.js";
-import Characters from "../components/Characters";
-import { letterState, viewLetterListState } from "../recoil/posts";
-import { userState } from "../recoil/user";
-import { getLetterList } from "../api/letter";
 
 const AllRollingPapers = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const [pumpkinList, setPumpkinList] = useRecoilState(viewLetterListState);
-  const [pumpkinContent, setPumpkinContent] = useRecoilState(letterState);
   const { personalPath } = useParams();
   const [myLink, setMyLink] = useState("");
-  // 닫기, 안내, 쓰기, 비번, 읽기, 수정
-  const [showModal, setShowModal] = useState("닫기");
+  const [showModal] = useRecoilState(showModalState); // 닫기, 안내, 쓰기, 비번, 읽기, 수정
+  const [showStickersModal] = useRecoilState(showStickerModalState);
   const [pumpkinPage, setPumpkinPage] = useState(0);
+  const [createOrUpdate, setCreateOrUpdate] = useState("create");
+  const resetLetter = useResetRecoilState(letterState);
+  const setLetter = useSetRecoilState(letterState);
+  const setShowModal = useSetRecoilState(showModalState);
 
   useEffect(() => {
     setUserInfo({ ...userInfo, url: personalPath || "" });
@@ -31,6 +34,7 @@ const AllRollingPapers = () => {
   }, []);
 
   useEffect(() => {
+    // getLetterList(userInfo.userId, pumpkinPage);
     setPumpkinList(dummyPumpkinList);
   }, [pumpkinPage]);
 
@@ -40,8 +44,8 @@ const AllRollingPapers = () => {
 
   const showLetter = (i: number) => {
     setShowModal("비번");
-    console.log(i + "로 알맞는 롤링페이퍼 내용 가져오기");
-    setPumpkinContent(dummyPumpkin);
+    console.log(i + "로 알맞는 롤링페이퍼 내용 가져오고 setLetter");
+    setLetter(dummyPumpkin);
   };
 
   const writeLetter = (i: number) => {
@@ -50,7 +54,9 @@ const AllRollingPapers = () => {
   };
 
   const clickPumpkin = (flag: boolean, i: number) => {
+    setCreateOrUpdate(flag ? "update" : "create");
     if (flag) return showLetter(i);
+    resetLetter();
     return writeLetter(i);
   };
 
@@ -59,33 +65,13 @@ const AllRollingPapers = () => {
       case "비번":
         return <Password setShowModal={setShowModal} />;
       case "읽기":
-        return (
-          <Letter
-            element={
-              <_Content setShowModal={setShowModal} letter={pumpkinContent} />
-            }
-          />
-        );
+        return <Letter element={<_Content />} />;
       case "안내":
-        return <Letter element={<_Notice setShowModal={setShowModal} />} />;
+        return <Letter element={<_Notice />} />;
       case "쓰기":
-        return (
-          <Letter
-            element={
-              <_Write createOrUpdate="create" setShowModal={setShowModal} />
-            }
-          />
-        );
+        return <Letter element={<_Write createOrUpdate={createOrUpdate} />} />;
       case "수정":
-        return (
-          <Letter
-            element={
-              <_Write createOrUpdate="update" setShowModal={setShowModal} />
-            }
-          />
-        );
-      case "쓰기선택" || "수정선택":
-        return <Characters setShowModal={setShowModal} />;
+        return <Letter element={<_Write createOrUpdate={createOrUpdate} />} />;
       default:
         return null;
     }
@@ -118,12 +104,12 @@ const AllRollingPapers = () => {
               <img
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt={imageName}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square cursor-pointer"
                 onClick={() => clickPumpkin(flag, v.letterId)}
               />
               {flag && (
                 <img
-                  className="absolute left-1/2 top-2/3 pb-2 -translate-x-1/2 -translate-y-1/2 w-3/5"
+                  className="absolute left-1/2 top-2/3 pb-2 -translate-x-1/2 -translate-y-1/2 w-3/5 cursor-pointer hover:scale-110 transition-all"
                   src={v.stickerUrl}
                   alt="character"
                   onClick={() => clickPumpkin(flag, v.letterId)}
@@ -142,9 +128,8 @@ const AllRollingPapers = () => {
           {myLink}
         </button>
       </div>
-      {showModal !== "닫기" && (
-        <Modal setShowModal={setShowModal} element={<ModalCase />} />
-      )}
+      {showModal !== "닫기" && <Modal element={<ModalCase />} />}
+      {showStickersModal && <Characters createOrUpdate={createOrUpdate} />}
     </div>
   );
 };

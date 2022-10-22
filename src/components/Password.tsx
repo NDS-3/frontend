@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { getLetterWithPassword } from "../api/letter";
+import { useRecoilState } from "recoil";
+import { ownerState } from "../recoil/user";
 
 interface IProps {
   setShowModal: React.Dispatch<React.SetStateAction<string>>;
@@ -6,11 +9,13 @@ interface IProps {
 
 const Password = ({ setShowModal }: IProps) => {
   const [password, setPassword] = useState("");
+  const [ownerInfo] = useRecoilState(ownerState);
+
   const checkPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // getLetterWithPassword(ownerInfo.userId, )
     alert(password + "를 담아서 요청 보내기");
     setPassword("");
-    setShowModal("비번");
     // 맞으면 id, imageUrl, content 담아 보내고 => 편지 열기
     setShowModal("읽기");
     // 틀리면 idx: -1, 나머지는 빈문자열 담아 보내고 => 틀림 알려주고 모달 닫아버리기
@@ -25,9 +30,10 @@ const Password = ({ setShowModal }: IProps) => {
           <input
             placeholder="password"
             type="password"
-            className="w-1/1"
+            className="w-1/1 p-1"
             value={password}
             id="pw"
+            autoFocus
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
