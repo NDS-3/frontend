@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { EachLetter, letterState } from "../recoil/posts";
+import { letterState } from "../recoil/letters";
+import { EachLetterType } from "../type";
 import { showModalState, showStickerModalState } from "../recoil/modal";
+import { useMutation, useQueryClient } from "react-query";
+import { postLetter, putLetter } from "../api/letter";
+import { ownerState } from "../recoil/user";
 interface IProps {
   createOrUpdate: string;
 }
 
 const _Write = ({ createOrUpdate }: IProps) => {
+  const queryClient = useQueryClient();
   const [inputPassword, setInputPassword] = useState("");
+  const [userInfo] = useRecoilState(ownerState);
 
   const setShowModal = useSetRecoilState(showModalState);
   const setShowStickerModal = useSetRecoilState(showStickerModalState);
 
   const [letter, setLetter] = useRecoilState(letterState);
-  const [newLetter, setNewLetter] = useState<EachLetter>({
+  const [newLetter, setNewLetter] = useState<EachLetterType>({
     letterId: -1,
-    stickerUrl: "",
+    sticker: {
+      id: -1,
+      image_url: "",
+    },
     content: "",
   });
 
@@ -34,25 +43,57 @@ const _Write = ({ createOrUpdate }: IProps) => {
     }
   };
 
+  const { mutate: postLetterMutation } = useMutation(postLetter, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getLetterList"]);
+      console.log("🎁 Success postLetter");
+    },
+    onError: (err) => {
+      console.log("🎃 Error postLetter:", err);
+    },
+  });
+
+  const { mutate: putLetterMutation } = useMutation(putLetter, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getLetterList"]);
+      console.log("🎁 Success putLetter");
+    },
+    onError: (err) => {
+      console.log("🎃 Error putLetter:", err);
+    },
+  });
+
   const createLetter = () => {
     const data = {
+      userId: userInfo.userId,
       password: inputPassword,
-      stickerUrl: newLetter.stickerUrl,
+      stickerId: newLetter.sticker.id,
       content: newLetter.content,
     };
-    // ✔return 받은 값으로 setLetter() 하고 읽기로 모달 바꿔주기
-    console.log("POST data:", data);
+    postLetterMutation(data, {
+      onSuccess: (data) => {
+        setLetter(data);
+        console.log("🎁 Success postLetterMutation:", data);
+      },
+    });
     setShowModal("닫기");
   };
 
   const updateLetter = () => {
     const data = {
       letterId: letter.letterId,
-      stickerUrl: newLetter.stickerUrl,
+      stickerId: newLetter.sticker.id,
       content: newLetter.content,
     };
-    setLetter(data);
-    console.log("PUT data:", data);
+    putLetterMutation(data, {
+      onSuccess: (data) => {
+        setLetter({ ...newLetter, letterId: letter.letterId });
+        console.log("🎁 Success putLetterMutation:", data);
+      },
+      onError: (err) => {
+        console.log("🎃 Error putLetterMutation:", err);
+      },
+    });
     setShowModal("읽기");
   };
 
@@ -65,7 +106,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
     <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-xl">
       <img
         src={
-          newLetter.stickerUrl ||
+          newLetter.sticker.image_url ||
           "https://cdn.wadiz.kr/ft/images/green001/2021/1220/20211220134242960_16.jpg/wadiz/format/jpg/quality/80/optimize"
         }
         alt="sticker"

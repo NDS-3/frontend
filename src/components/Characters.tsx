@@ -1,37 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { stickerListState, Sticker } from "../recoil/stickers";
-import { letterState } from "../recoil/posts";
+import { stickerListState } from "../recoil/stickers";
+import { StickerType } from "../type";
+import { letterState } from "../recoil/letters";
 import PageController from "./PageController";
-import { dummyIconList } from "../dummy";
 import { showModalState, showStickerModalState } from "../recoil/modal";
+import { getStickers } from "../api/user";
+import { useQuery } from "react-query";
 
 interface IProps {
   createOrUpdate: string;
-}
-interface Istate {
-  icon: Sticker;
 }
 
 const Characters = ({ createOrUpdate }: IProps) => {
   const [page, setPage] = useState(0);
   const [originIcons, setOriginIcons] = useRecoilState(stickerListState);
   const [letter, setLetter] = useRecoilState(letterState);
-  const [viewIcons, setViewIcons] = useState<Istate["icon"][]>([]);
+  const [viewIcons, setViewIcons] = useState<StickerType[]>([]);
   const setShowModal = useSetRecoilState(showModalState);
   const setShowStickersModal = useSetRecoilState(showStickerModalState);
 
-  useEffect(() => {
-    setOriginIcons(dummyIconList);
-  }, []);
+  const { data } = useQuery<StickerType[]>(
+    ["getStickers"],
+    () => getStickers(),
+    {
+      onSuccess: (data) => {
+        console.log("🎁 Success getStickers:", data);
+        setOriginIcons(data);
+      },
+    }
+  );
 
   useEffect(() => {
     const start = page * 10;
     setViewIcons(originIcons.slice(start, start + 10));
-  }, [originIcons]);
+  }, [originIcons, page]);
 
-  const clickSticker = (url: string) => {
-    setLetter({ ...letter, stickerUrl: url });
+  const clickSticker = (sticker: StickerType) => {
+    setLetter({ ...letter, sticker });
     setShowStickersModal(false);
     if (createOrUpdate === "create") {
       setShowModal("쓰기");
@@ -44,12 +50,12 @@ const Characters = ({ createOrUpdate }: IProps) => {
         <p className="mt-5 text-3xl">캐릭터를 선택하세요!</p>
         <div className="w-4/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid grid-cols-5">
           {viewIcons.map((v) => (
-            <div key={v.stickerId} className="my-10">
+            <div key={v.id} className="my-10">
               <img
                 className="mx-auto cursor-pointer hover:scale-110 transition-all"
-                src={v.stickerUrl}
-                alt={`${v.stickerId}pic`}
-                onClick={() => clickSticker(v.stickerUrl)}
+                src={v.image_url}
+                alt={`${v.id}pic`}
+                onClick={() => clickSticker(v)}
               />
             </div>
           ))}

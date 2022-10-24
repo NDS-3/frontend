@@ -20,11 +20,11 @@ export const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
           <App />
-        </QueryClientProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </QueryClientProvider>
     </RecoilRoot>
   </React.StrictMode>
 );

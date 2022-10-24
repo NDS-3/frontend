@@ -1,17 +1,9 @@
 import { apiClient } from ".";
-import { EachLetter } from "../recoil/posts";
-
-interface Istate {
-  postData: {
-    password: string;
-    stickerUrl: string;
-    content: string;
-  };
-  putData: EachLetter;
-}
+import { PutLetterType, PostLetterType } from "../type";
 
 export const getLetterList = async (userId: number, page: number) => {
-  const response = await apiClient.get(`user/${userId}/letters/?page=${page}`);
+  const response = await apiClient.get(`/user/${userId}/letters/?page=${page}`);
+  console.log("👀 getLetterList response", response);
   return response.data;
 };
 
@@ -22,23 +14,29 @@ export const getLetterWithPassword = async (
 ) => {
   const data = { password };
   const response = await apiClient.post(
-    `user/${userId}/letters/${letterId}`,
+    `/user/${userId}/letters/${letterId}`,
     data
   );
+  console.log("👀 getLetterWithPassword response", response);
   return response.data;
 };
 
-export const postLetter = async (userId: number, data: Istate["postData"]) => {
-  const response = await apiClient.post(`user/${userId}/letters`, data);
+export const postLetter = async (data: PostLetterType) => {
+  const { userId } = data;
+  delete data.userId;
+  const response = await apiClient.post(`/user/${userId}/letters`, data);
+  console.log("👀 postLetter response", response);
   return response.data;
-};
+}; // ✔
 
-export const putLetter = async (letterId: number, data: Istate["putData"]) => {
-  const response = await apiClient.put(`letters/${letterId}`, data);
+export const putLetter = async (data: PutLetterType) => {
+  const response = await apiClient.put(`/letters/${data.letterId}`, data);
+  console.log("👀 putLetter response", response);
   return response.data;
-};
+}; // ✔
 
 export const deleteLetter = async (letterId: number) => {
-  const response = await apiClient.delete(`letters/${letterId}`);
+  const response = await apiClient.delete(`/letters/${letterId}`);
+  console.log("👀 deleteLetter response", response);
   return response.data;
 };

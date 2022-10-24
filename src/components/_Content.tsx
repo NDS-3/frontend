@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
-import { letterState } from "../recoil/posts";
+import { letterState } from "../recoil/letters";
 
 const _Content = () => {
   const setShowModal = useSetRecoilState(showModalState);
@@ -24,7 +24,7 @@ const _Content = () => {
   return (
     <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-white text-xl">
       <img
-        src={letter.stickerUrl}
+        src={letter.sticker.image_url}
         alt="character"
         className="w-1/5 aspect-square"
       />
