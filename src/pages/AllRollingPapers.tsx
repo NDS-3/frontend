@@ -9,6 +9,7 @@ import { ownerState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
+import { getUserInfo } from "../api/user";
 
 import Characters from "../components/Characters";
 import Password from "../components/Password";
@@ -19,7 +20,9 @@ import _Content from "../components/_Content";
 import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
-import { dummyPumpkin } from "../dummy";
+import { dummyPumpkin, dummyPumpkinList } from "../dummy";
+
+import { PatchUserName } from "../type";
 
 const AllRollingPapers = () => {
   const { personalPath } = useParams();
@@ -39,26 +42,40 @@ const AllRollingPapers = () => {
   const resetLetter = useResetRecoilState(letterState);
 
   useEffect(() => {
-    setUserInfo({ ...userInfo, url: personalPath || "" });
     setMyLink("http://localhost:3000/" + personalPath);
+    setPumpkinList(dummyPumpkinList);
   }, []);
 
-  const { data } = useQuery<AllLetterType[], Error>(
-    ["getLetterList", pumpkinPage],
-    () => getLetterList(userInfo.userId, pumpkinPage),
+  const { data: getUserInfoData } = useQuery<PatchUserName>(
+    "getUserInfo",
+    () => getUserInfo(personalPath || ""),
     {
       refetchOnWindowFocus: false,
-      refetchOnMount: true,
+      refetchOnMount: false,
       retry: false,
       onSuccess: (data) => {
-        console.log("🎁 Success getLetterListData:", data);
-        setPumpkinList(data);
-      },
-      onError: (err) => {
-        console.log("🎃 Error getLetterList:", err);
+        console.log("🎁 Success getUserInfo:", data);
+        setUserInfo({ ...data, personalUrl: personalPath || "" });
       },
     }
   );
+
+  // const { data } = useQuery<AllLetterType[], Error>(
+  //   ["getLetterList", pumpkinPage],
+  //   () => getLetterList(userInfo.id, pumpkinPage),
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //     retry: false,
+  //     onSuccess: (data) => {
+  //       console.log("🎁 Success getLetterListData:", data);
+  //       setPumpkinList(data);
+  //     },
+  //     onError: (err) => {
+  //       console.log("🎃 Error getLetterList:", err);
+  //     },
+  //   }
+  // );
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(myLink);
@@ -67,7 +84,7 @@ const AllRollingPapers = () => {
   const showLetter = (i: number) => {
     setShowModal("비번");
     console.log(i + "로 알맞는 롤링페이퍼 내용 가져오고 setLetter");
-    setLetter(dummyPumpkin);
+    // setLetter(dummyPumpkin);
   };
 
   const writeLetter = (i: number) => {
@@ -102,7 +119,7 @@ const AllRollingPapers = () => {
   };
 
   const changeName = () => {
-    if (userInfo.userId < 0) {
+    if (userInfo.id > 0) {
       setShowModal("이름");
     }
   };
@@ -120,15 +137,14 @@ const AllRollingPapers = () => {
       />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
         <div className="pb-4">
-          <span onClick={() => changeName()}>{userInfo.userName}</span>
+          <span onClick={() => changeName()}>{userInfo.username}</span>
           <span>님의 롤링페이퍼입니다.</span>
         </div>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="w-4/5 mx-auto grid grid-cols-5">
         {pumpkinList.map((v) => {
-          // const flag = v.image_url.length > 0;
-          const flag = false;
+          const flag = v.sticker.image_url.length > 0;
           const imageName = flag ? "full" : "empty";
           return (
             <div

@@ -2,16 +2,39 @@ import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { ownerState } from "../recoil/user";
+import { patchUserName } from "../api/user";
+import { useMutation } from "react-query";
 
 const ChangeName = () => {
   const [newName, setNewName] = useState("");
-  const [userInfo, setUSerInfo] = useRecoilState(ownerState);
+  const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const setShowModal = useSetRecoilState(showModalState);
+
+  const { mutate: patchUserNameMutation } = useMutation(patchUserName, {
+    onSuccess: () => {
+      console.log("🎁 Success patchLetter");
+    },
+    onError: (err) => {
+      console.log("🎃 Error patchLetter:", err);
+    },
+  });
 
   const changeOwnerName = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!!newName.trim()) {
-      setUSerInfo({ ...userInfo, userName: newName });
+    const nameTrim = newName.trim();
+    if (!!nameTrim) {
+      console.log("here");
+      const data = { id: userInfo.id, username: nameTrim };
+      console.log(data);
+      patchUserNameMutation(data, {
+        onSuccess: () => {
+          setUserInfo({ ...userInfo, username: nameTrim });
+          console.log(userInfo);
+        },
+        onError: (err) => {
+          console.log("🎃 Error patchUserName:", err);
+        },
+      });
     }
     setShowModal("닫기");
   };

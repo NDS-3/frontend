@@ -13,20 +13,25 @@ export interface EachLetterType extends AllLetterType {
 }
 
 export interface PostLetterType {
-  userId?: number;
+  id?: number;
   password: string;
   stickerId: number;
   content: string;
 }
 
-export interface PutLetterType {
+export interface PatchLetterType {
   letterId: number;
   stickerId: number;
   content: string;
 }
 
 export interface OwnerType {
-  userId: number;
-  userName: string;
-  url: string;
+  id: number;
+  username: string;
+  personalUrl: string;
+}
+
+export interface PatchUserName {
+  id: number;
+  username: string;
 }

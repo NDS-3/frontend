@@ -2,18 +2,20 @@ import React from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { letterState } from "../recoil/letters";
+import { deleteLetter } from "../api/letter";
 
 const _Content = () => {
   const setShowModal = useSetRecoilState(showModalState);
   const [letter] = useRecoilState(letterState);
   const resetLetter = useResetRecoilState(letterState);
 
-  const deleteLetter = () => {
+  const clickDelete = () => {
     const answer = window.confirm("삭제?");
     if (answer) {
-      console.log("DELETE id:", letter.letterId);
+      deleteLetter(letter.letterId).then(() => {
+        resetLetter();
+      });
       setShowModal("닫기");
-      resetLetter();
     }
   };
 
@@ -40,7 +42,7 @@ const _Content = () => {
         </button>
         <button
           className="py-1 px-3 rounded-lg shadow-md bg-orange-300"
-          onClick={() => deleteLetter()}
+          onClick={() => clickDelete()}
         >
           삭제
         </button>

@@ -69,7 +69,7 @@ export const dummyPumpkinList = [
     letterId: 10,
     sticker: {
       id: 10,
-      image_url: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
+      image_url: "",
     },
   },
 ];

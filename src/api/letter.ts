@@ -1,20 +1,18 @@
 import { apiClient } from ".";
-import { PutLetterType, PostLetterType } from "../type";
+import { PatchLetterType, PostLetterType } from "../type";
 
-export const getLetterList = async (userId: number, page: number) => {
-  const response = await apiClient.get(`/user/${userId}/letters/?page=${page}`);
+export const getLetterList = async (id: number, page: number) => {
+  const response = await apiClient.get(`/users/${id}/letters/?page=${page}`);
   console.log("👀 getLetterList response", response);
   return response.data;
 };
 
-export const getLetterWithPassword = async (
-  userId: number,
-  letterId: number,
-  password: string
-) => {
-  const data = { password };
+export const getLetterWithPassword = async (data: any) => {
+  const { id, letterId } = data;
+  delete data.id;
+  delete data.letterId;
   const response = await apiClient.post(
-    `/user/${userId}/letters/${letterId}`,
+    `/users/${id}/letters/${letterId}`,
     data
   );
   console.log("👀 getLetterWithPassword response", response);
@@ -22,16 +20,17 @@ export const getLetterWithPassword = async (
 };
 
 export const postLetter = async (data: PostLetterType) => {
-  const { userId } = data;
-  delete data.userId;
-  const response = await apiClient.post(`/user/${userId}/letters`, data);
+  const { id } = data;
+  delete data.id;
+  console.log("data:", data);
+  const response = await apiClient.post(`/users/${id}/letters`, data);
   console.log("👀 postLetter response", response);
   return response.data;
 }; // ✔
 
-export const putLetter = async (data: PutLetterType) => {
-  const response = await apiClient.put(`/letters/${data.letterId}`, data);
-  console.log("👀 putLetter response", response);
+export const patchLetter = async (data: PatchLetterType) => {
+  const response = await apiClient.patch(`/letters/${data.letterId}`, data);
+  console.log("👀 patchLetter response", response);
   return response.data;
 }; // ✔
 

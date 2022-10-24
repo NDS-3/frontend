@@ -4,7 +4,7 @@ import { letterState } from "../recoil/letters";
 import { EachLetterType } from "../type";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { useMutation, useQueryClient } from "react-query";
-import { postLetter, putLetter } from "../api/letter";
+import { postLetter, patchLetter } from "../api/letter";
 import { ownerState } from "../recoil/user";
 interface IProps {
   createOrUpdate: string;
@@ -53,19 +53,19 @@ const _Write = ({ createOrUpdate }: IProps) => {
     },
   });
 
-  const { mutate: putLetterMutation } = useMutation(putLetter, {
+  const { mutate: patchLetterMutation } = useMutation(patchLetter, {
     onSuccess: () => {
       queryClient.invalidateQueries(["getLetterList"]);
-      console.log("🎁 Success putLetter");
+      console.log("🎁 Success patchLetter");
     },
     onError: (err) => {
-      console.log("🎃 Error putLetter:", err);
+      console.log("🎃 Error patchLetter:", err);
     },
   });
 
   const createLetter = () => {
     const data = {
-      userId: userInfo.userId,
+      id: userInfo.id,
       password: inputPassword,
       stickerId: newLetter.sticker.id,
       content: newLetter.content,
@@ -85,13 +85,13 @@ const _Write = ({ createOrUpdate }: IProps) => {
       stickerId: newLetter.sticker.id,
       content: newLetter.content,
     };
-    putLetterMutation(data, {
+    patchLetterMutation(data, {
       onSuccess: (data) => {
         setLetter({ ...newLetter, letterId: letter.letterId });
-        console.log("🎁 Success putLetterMutation:", data);
+        console.log("🎁 Success patchLetterMutation:", data);
       },
       onError: (err) => {
-        console.log("🎃 Error putLetterMutation:", err);
+        console.log("🎃 Error patchLetterMutation:", err);
       },
     });
     setShowModal("읽기");
