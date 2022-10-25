@@ -1,20 +1,15 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { OwnerType } from "../type";
 
 const { persistAtom } = recoilPersist();
 
-export interface Istate {
-  user: {
-    userName: string;
-    url: string;
-  };
-}
-
-export const userState = atom<Istate["user"]>({
-  key: "user",
+export const ownerState = atom<OwnerType>({
+  key: "ownerState",
   default: {
-    userName: "",
-    url: "",
+    id: 1,
+    username: "기본이름",
+    personalUrl: "sGY2u_NeYOs7j_OUlgyVSA",
   },
-  effects_UNSTABLE: [persistAtom],
+  // effects_UNSTABLE: [persistAtom],
 });

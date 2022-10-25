@@ -1,20 +1,40 @@
 import React, { useState } from "react";
+import { getLetterWithPassword } from "../api/letter";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ownerState } from "../recoil/user";
+import { showModalState } from "../recoil/modal";
+import { letterState } from "../recoil/letter";
+import { useMutation } from "react-query";
+import { AxiosError, AxiosResponse } from "axios";
 
-interface IProps {
-  setShowModal: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const Password = ({ setShowModal }: IProps) => {
+const Password = () => {
   const [password, setPassword] = useState("");
+  const [userInfo] = useRecoilState(ownerState);
+  const setShowModal = useSetRecoilState(showModalState);
+  const [letter, setLetter] = useRecoilState(letterState);
+
+  const { mutate: getLetterWithPasswordMutation } = useMutation(
+    getLetterWithPassword,
+    {
+      onSuccess: (response: AxiosResponse) => {
+        setLetter(response.data);
+        console.log("🎁 Success getLetterWithPassword:", response.data);
+        setShowModal("읽기");
+      },
+      onError: (err: AxiosError) => {
+        const getLetterWithPasswordStatus = err.response?.status;
+        if (getLetterWithPasswordStatus === 403) {
+          alert("비밀번호가 틀렸습니다.\n다시 입력해주세요.");
+          setPassword("");
+        } else console.log("🎃 Error getLetterWithPassword", err);
+      },
+    }
+  );
+
   const checkPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(password + "를 담아서 요청 보내기");
-    setPassword("");
-    setShowModal("비번");
-    // 맞으면 id, imageUrl, content 담아 보내고 => 편지 열기
-    setShowModal("읽기");
-    // 틀리면 idx: -1, 나머지는 빈문자열 담아 보내고 => 틀림 알려주고 모달 닫아버리기
-    // alert("비밀번호가 틀렸습니다")
+    const data = { id: userInfo.id, letterId: letter.id, password };
+    getLetterWithPasswordMutation(data);
   };
 
   return (
@@ -25,9 +45,10 @@ const Password = ({ setShowModal }: IProps) => {
           <input
             placeholder="password"
             type="password"
-            className="w-1/1"
+            className="w-1/1 p-1"
             value={password}
             id="pw"
+            autoFocus
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>

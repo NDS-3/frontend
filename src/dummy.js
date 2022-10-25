@@ -1,173 +1,238 @@
 export const dummyPumpkinList = [
   {
-    letterId: 0,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
-  },
-  {
     letterId: 1,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
+    sticker: {
+      id: 1,
+      imageUrl:
+        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost+(1).png",
+    },
   },
   {
     letterId: 2,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
+    sticker: {
+      id: 2,
+      imageUrl:
+        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/angel.png",
+    },
   },
   {
     letterId: 3,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
+    sticker: {
+      id: 3,
+      imageUrl:
+        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/butterfly.png",
+    },
   },
   {
     letterId: 4,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
+    sticker: {
+      id: 4,
+      imageUrl: "",
+    },
   },
   {
     letterId: 5,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
+    sticker: {
+      id: 5,
+      imageUrl: "",
+    },
   },
   {
     letterId: 6,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
+    sticker: {
+      id: 6,
+      imageUrl: "",
+    },
   },
   {
     letterId: 7,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
+    sticker: {
+      id: 7,
+      imageUrl: "",
+    },
   },
   {
     letterId: 8,
-    stickerUrl: "",
+    sticker: {
+      id: 8,
+      imageUrl: "",
+    },
   },
   {
     letterId: 9,
-    stickerUrl: "",
+    sticker: {
+      id: 9,
+      imageUrl: "",
+    },
+  },
+  {
+    letterId: 10,
+    sticker: {
+      id: 10,
+      imageUrl: "",
+    },
   },
 ];
 
 export const dummyPumpkin = {
-  letterId: 0,
-  stickerUrl:
-    "https://images.chosun.com/resizer/aRkMdmnf2bEYLwNOTLe2ZvrHDnQ=/540x405/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/YIARR5OJCFAG5AGRYZYWOGTQKE.jpg",
+  letterId: 1,
+  sticker: {
+    id: 1,
+    imageUrl: "https://nds.nongshim.co.kr/web/images/new_main/logo01.gif",
+  },
   content:
-    "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지. 오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 왜 벌써 목요일이지",
+    "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지.\n오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 왜 벌써 목요일이지",
 };
 
 export const dummyIconList = [
   {
-    stickerId: 0,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
+    id: 1,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost+(1).png",
   },
   {
-    stickerId: 1,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
+    id: 2,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/angel.png",
   },
   {
-    stickerId: 2,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
+    id: 3,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/butterfly.png",
   },
   {
-    stickerId: 3,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
+    id: 4,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/clown.png",
   },
   {
-    stickerId: 4,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
+    id: 5,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/costume.png",
   },
   {
-    stickerId: 5,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
+    id: 6,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/cyborg.png",
   },
   {
-    stickerId: 6,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
+    id: 7,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/devil.png",
   },
   {
-    stickerId: 7,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
+    id: 8,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/dracula.png",
   },
   {
-    stickerId: 8,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3394/3394203.png",
+    id: 9,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost.png",
   },
   {
-    stickerId: 9,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/2119/2119243.png",
+    id: 10,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/halloween.png",
   },
   {
-    stickerId: 10,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
+    id: 11,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/hot-dog.png",
   },
   {
-    stickerId: 11,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
+    id: 12,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/jason.png",
   },
   {
-    stickerId: 12,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
+    id: 13,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/jester.png",
   },
   {
-    stickerId: 13,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
+    id: 13,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/jester.png",
   },
   {
-    stickerId: 14,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
+    id: 15,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/knife.png",
   },
   {
-    stickerId: 15,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
+    id: 16,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/little-red-riding-hood.png",
   },
   {
-    stickerId: 16,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
+    id: 17,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/mummy+(1).png",
   },
   {
-    stickerId: 17,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
+    id: 18,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/mummy.png",
   },
   {
-    stickerId: 18,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3394/3394203.png",
+    id: 19,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/pirate.png",
   },
   {
-    stickerId: 19,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/2119/2119243.png",
+    id: 20,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/pumpkin.png",
   },
   {
-    stickerId: 20,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/581/581577.png",
+    id: 21,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/reaper.png",
   },
   {
-    stickerId: 21,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685842.png",
+    id: 22,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/scarecrow.png",
   },
   {
-    stickerId: 22,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277259.png",
+    id: 23,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/skeleton+(1).png",
   },
   {
-    stickerId: 23,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/685/685844.png",
+    id: 24,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/skeleton.png",
   },
   {
-    stickerId: 24,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1141/1141463.png",
+    id: 25,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/tombstone.png",
   },
   {
-    stickerId: 25,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/12/12394.png",
+    id: 26,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/werewolf.png",
   },
   {
-    stickerId: 26,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3277/3277320.png",
+    id: 27,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/witch+(1).png",
   },
   {
-    stickerId: 27,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/1235/1235096.png",
+    id: 28,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/witch.png",
   },
   {
-    stickerId: 28,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/3394/3394203.png",
+    id: 29,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/zombie+(1).png",
   },
   {
-    stickerId: 29,
-    stickerUrl: "https://cdn-icons-png.flaticon.com/128/2119/2119243.png",
+    id: 30,
+    imageUrl:
+      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/zombie.png",
   },
 ];
