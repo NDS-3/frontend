@@ -1,10 +1,13 @@
 import React from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
-import { letterState } from "../recoil/letters";
+import { letterState } from "../recoil/letter";
 import { deleteLetter } from "../api/letter";
+import { useQueryClient } from "react-query";
 
 const _Content = () => {
+  const queryClient = useQueryClient();
+
   const setShowModal = useSetRecoilState(showModalState);
   const [letter] = useRecoilState(letterState);
   const resetLetter = useResetRecoilState(letterState);
@@ -12,7 +15,8 @@ const _Content = () => {
   const clickDelete = () => {
     const answer = window.confirm("삭제?");
     if (answer) {
-      deleteLetter(letter.letterId).then(() => {
+      deleteLetter(letter.id).then(() => {
+        queryClient.invalidateQueries(["getLetterList"]);
         resetLetter();
       });
       setShowModal("닫기");
@@ -26,7 +30,7 @@ const _Content = () => {
   return (
     <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-white text-xl">
       <img
-        src={letter.sticker.image_url}
+        src={letter.sticker.imageUrl}
         alt="character"
         className="w-1/5 aspect-square"
       />

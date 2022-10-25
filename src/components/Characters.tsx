@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { stickerListState } from "../recoil/stickers";
+import { stickerListState } from "../recoil/sticker";
 import { StickerType } from "../type";
-import { letterState } from "../recoil/letters";
+import { letterState } from "../recoil/letter";
 import PageController from "./PageController";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { getStickers } from "../api/user";
@@ -20,16 +20,12 @@ const Characters = ({ createOrUpdate }: IProps) => {
   const setShowModal = useSetRecoilState(showModalState);
   const setShowStickersModal = useSetRecoilState(showStickerModalState);
 
-  const { data } = useQuery<StickerType[]>(
-    ["getStickers"],
-    () => getStickers(),
-    {
-      onSuccess: (data) => {
-        console.log("🎁 Success getStickers:", data);
-        setOriginIcons(data);
-      },
-    }
-  );
+  useQuery<StickerType[]>(["getStickers"], () => getStickers(), {
+    onSuccess: (data) => {
+      console.log("🎁 Success getStickers:", data);
+      setOriginIcons(data);
+    },
+  });
 
   useEffect(() => {
     const start = page * 10;
@@ -53,7 +49,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
             <div key={v.id} className="my-10">
               <img
                 className="mx-auto cursor-pointer hover:scale-110 transition-all"
-                src={v.image_url}
+                src={v.imageUrl}
                 alt={`${v.id}pic`}
                 onClick={() => clickSticker(v)}
               />

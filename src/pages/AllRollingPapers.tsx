@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { AllLetterType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { letterState, viewLetterListState } from "../recoil/letters";
+import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { ownerState } from "../recoil/user";
 
@@ -20,9 +20,8 @@ import _Content from "../components/_Content";
 import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
-import { dummyPumpkin, dummyPumpkinList } from "../dummy";
 
-import { PatchUserName } from "../type";
+import { PatchUserNameType } from "../type";
 
 const AllRollingPapers = () => {
   const { personalPath } = useParams();
@@ -33,20 +32,19 @@ const AllRollingPapers = () => {
 
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const [pumpkinList, setPumpkinList] = useRecoilState(viewLetterListState);
+  const [letter, setLetter] = useRecoilState(letterState);
   const [showModal] = useRecoilState(showModalState); // 닫기, 안내, 쓰기, 비번, 읽기, 수정
   const [showStickersModal] = useRecoilState(showStickerModalState);
 
-  const setLetter = useSetRecoilState(letterState);
   const setShowModal = useSetRecoilState(showModalState);
-
   const resetLetter = useResetRecoilState(letterState);
 
   useEffect(() => {
     setMyLink("http://localhost:3000/" + personalPath);
-    setPumpkinList(dummyPumpkinList);
+    // setPumpkinList(dummyPumpkinList);
   }, []);
 
-  const { data: getUserInfoData } = useQuery<PatchUserName>(
+  useQuery<PatchUserNameType, Error>(
     "getUserInfo",
     () => getUserInfo(personalPath || ""),
     {
@@ -60,43 +58,36 @@ const AllRollingPapers = () => {
     }
   );
 
-  // const { data } = useQuery<AllLetterType[], Error>(
-  //   ["getLetterList", pumpkinPage],
-  //   () => getLetterList(userInfo.id, pumpkinPage),
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //     retry: false,
-  //     onSuccess: (data) => {
-  //       console.log("🎁 Success getLetterListData:", data);
-  //       setPumpkinList(data);
-  //     },
-  //     onError: (err) => {
-  //       console.log("🎃 Error getLetterList:", err);
-  //     },
-  //   }
-  // );
+  useQuery<AllLetterType[], Error>(
+    ["getLetterList", pumpkinPage],
+    () => getLetterList(userInfo.id, pumpkinPage),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retry: false,
+      onSuccess: (data) => {
+        console.log("🎁 Success getLetterListData:", data);
+        setPumpkinList(data);
+      },
+      onError: (err) => {
+        console.log("🎃 Error getLetterList:", err);
+      },
+    }
+  );
 
   const copyLink = () => {
     window.navigator.clipboard.writeText(myLink);
   };
 
-  const showLetter = (i: number) => {
-    setShowModal("비번");
-    console.log(i + "로 알맞는 롤링페이퍼 내용 가져오고 setLetter");
-    // setLetter(dummyPumpkin);
-  };
-
-  const writeLetter = (i: number) => {
-    console.log(i + "번째 편지쓸래");
-    setShowModal("안내");
-  };
-
-  const clickPumpkin = (flag: boolean, i: number) => {
+  const clickPumpkin = (flag: boolean, id: number) => {
     setCreateOrUpdate(flag ? "update" : "create");
-    if (flag) return showLetter(i);
-    resetLetter();
-    return writeLetter(i);
+    if (flag) {
+      setLetter({ ...letter, id: id });
+      setShowModal("비번");
+    } else {
+      resetLetter();
+      setShowModal("안내");
+    }
   };
 
   const ModalCase = () => {
@@ -143,26 +134,23 @@ const AllRollingPapers = () => {
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="w-4/5 mx-auto grid grid-cols-5">
-        {pumpkinList.map((v) => {
-          const flag = v.sticker.image_url.length > 0;
+        {pumpkinList.map((v, idx) => {
+          const flag = Object.keys(v).length > 0;
           const imageName = flag ? "full" : "empty";
           return (
-            <div
-              key={v.letterId}
-              className="w-1/2 m-1 relative h-1/1 aspect-square"
-            >
+            <div key={idx} className="w-1/2 m-1 relative h-1/1 aspect-square">
               <img
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt={imageName}
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square cursor-pointer"
-                onClick={() => clickPumpkin(flag, v.letterId)}
+                onClick={() => clickPumpkin(flag, v.id)}
               />
               {flag && (
                 <img
                   className="absolute left-1/2 top-2/3 pb-2 -translate-x-1/2 -translate-y-1/2 w-3/5 cursor-pointer hover:scale-110 transition-all"
-                  src={v.sticker.image_url}
+                  src={v.sticker.imageUrl}
                   alt="character"
-                  onClick={() => clickPumpkin(flag, v.letterId)}
+                  onClick={() => clickPumpkin(flag, v.id)}
                 />
               )}
             </div>

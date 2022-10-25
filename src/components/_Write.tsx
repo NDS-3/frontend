@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { letterState } from "../recoil/letters";
+import { letterState } from "../recoil/letter";
 import { EachLetterType } from "../type";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { useMutation, useQueryClient } from "react-query";
@@ -20,10 +20,10 @@ const _Write = ({ createOrUpdate }: IProps) => {
 
   const [letter, setLetter] = useRecoilState(letterState);
   const [newLetter, setNewLetter] = useState<EachLetterType>({
-    letterId: -1,
+    id: -1,
     sticker: {
       id: -1,
-      image_url: "",
+      imageUrl: "",
     },
     content: "",
   });
@@ -33,20 +33,28 @@ const _Write = ({ createOrUpdate }: IProps) => {
   }, []);
 
   const clickButton = () => {
+    const contentLen = newLetter.content.trim().length;
+    if (contentLen === 0) return alert("편지내용을 입력하세요");
+    else if (contentLen < 20 || contentLen > 200)
+      return alert(
+        `편지 내용을 20자 이상, 200자 이내로 입력하세요\n${contentLen}자 입력했습니다`
+      );
+
     if (createOrUpdate === "create") {
-      if (!!!inputPassword.trim()) alert("비밀번호를 입력하세요");
-      else if (!!!newLetter.content.trim()) alert("편지내용을 작성하세요");
-      else createLetter();
-    } else {
-      if (!!!newLetter.content.trim()) alert("편지내용을 입력하세요");
-      else updateLetter();
+      const passwordLen = inputPassword.trim().length;
+      if (passwordLen === 0) return alert("비밀번호를 입력하세요");
+      else if (passwordLen > 8 || passwordLen < 4)
+        return alert("4 ~ 8자리 사이의 비밀번호를 입력하세요");
+      else return createLetter();
     }
+    return updateLetter();
   };
 
   const { mutate: postLetterMutation } = useMutation(postLetter, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setLetter(data);
       queryClient.invalidateQueries(["getLetterList"]);
-      console.log("🎁 Success postLetter");
+      console.log("🎁 Success postLetter:", data);
     },
     onError: (err) => {
       console.log("🎃 Error postLetter:", err);
@@ -54,9 +62,10 @@ const _Write = ({ createOrUpdate }: IProps) => {
   });
 
   const { mutate: patchLetterMutation } = useMutation(patchLetter, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setLetter(data);
       queryClient.invalidateQueries(["getLetterList"]);
-      console.log("🎁 Success patchLetter");
+      console.log("🎁 Success patchLetter:", data);
     },
     onError: (err) => {
       console.log("🎃 Error patchLetter:", err);
@@ -70,30 +79,17 @@ const _Write = ({ createOrUpdate }: IProps) => {
       stickerId: newLetter.sticker.id,
       content: newLetter.content,
     };
-    postLetterMutation(data, {
-      onSuccess: (data) => {
-        setLetter(data);
-        console.log("🎁 Success postLetterMutation:", data);
-      },
-    });
-    setShowModal("닫기");
+    postLetterMutation(data);
+    setShowModal("읽기");
   };
 
   const updateLetter = () => {
     const data = {
-      letterId: letter.letterId,
+      letterId: letter.id,
       stickerId: newLetter.sticker.id,
       content: newLetter.content,
     };
-    patchLetterMutation(data, {
-      onSuccess: (data) => {
-        setLetter({ ...newLetter, letterId: letter.letterId });
-        console.log("🎁 Success patchLetterMutation:", data);
-      },
-      onError: (err) => {
-        console.log("🎃 Error patchLetterMutation:", err);
-      },
-    });
+    patchLetterMutation(data);
     setShowModal("읽기");
   };
 
@@ -106,7 +102,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
     <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-xl">
       <img
         src={
-          newLetter.sticker.image_url ||
+          newLetter.sticker.imageUrl ||
           "https://cdn.wadiz.kr/ft/images/green001/2021/1220/20211220134242960_16.jpg/wadiz/format/jpg/quality/80/optimize"
         }
         alt="sticker"
@@ -130,6 +126,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
           value={newLetter.content}
           placeholder="편지를 작성하세요"
           autoFocus={createOrUpdate === "update"}
+          required
           onChange={(e) =>
             setNewLetter({ ...newLetter, content: e.target.value })
           }

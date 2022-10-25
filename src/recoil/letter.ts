@@ -13,10 +13,10 @@ export const viewLetterListState = atom<AllLetterType[]>({
 export const letterState = atom<EachLetterType>({
   key: "letterState",
   default: {
-    letterId: 9,
+    id: -1,
     sticker: {
       id: -1,
-      image_url: "",
+      imageUrl: "",
     },
     content: "",
   },

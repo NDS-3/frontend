@@ -1,10 +1,10 @@
 export interface StickerType {
   id: number;
-  image_url: string;
+  imageUrl: string;
 }
 
 export interface AllLetterType {
-  letterId: number;
+  id: number;
   sticker: StickerType;
 }
 
@@ -31,7 +31,13 @@ export interface OwnerType {
   personalUrl: string;
 }
 
-export interface PatchUserName {
+export interface PatchUserNameType {
   id: number;
   username: string;
+}
+
+export interface GetLetterType {
+  id?: number;
+  letterId?: number;
+  password: string;
 }

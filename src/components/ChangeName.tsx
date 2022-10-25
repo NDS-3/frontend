@@ -11,11 +11,13 @@ const ChangeName = () => {
   const setShowModal = useSetRecoilState(showModalState);
 
   const { mutate: patchUserNameMutation } = useMutation(patchUserName, {
-    onSuccess: () => {
-      console.log("🎁 Success patchLetter");
+    onSuccess: (data) => {
+      console.log("🎁 Success patchUserName:", data);
+      delete data.email;
+      setUserInfo(data);
     },
     onError: (err) => {
-      console.log("🎃 Error patchLetter:", err);
+      console.log("🎃 Error patchUserName:", err);
     },
   });
 
@@ -23,18 +25,8 @@ const ChangeName = () => {
     e.preventDefault();
     const nameTrim = newName.trim();
     if (!!nameTrim) {
-      console.log("here");
       const data = { id: userInfo.id, username: nameTrim };
-      console.log(data);
-      patchUserNameMutation(data, {
-        onSuccess: () => {
-          setUserInfo({ ...userInfo, username: nameTrim });
-          console.log(userInfo);
-        },
-        onError: (err) => {
-          console.log("🎃 Error patchUserName:", err);
-        },
-      });
+      patchUserNameMutation(data);
     }
     setShowModal("닫기");
   };

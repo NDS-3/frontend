@@ -1,5 +1,5 @@
 import { apiClient } from ".";
-import { PatchUserName } from "../type";
+import { PatchUserNameType } from "../type";
 
 export const getUserInfo = async (url: string) => {
   const response = await apiClient.get(`/users/${url}`);
@@ -19,8 +19,8 @@ export const getUrl = async (id: number) => {
   return response.data;
 };
 
-export const patchUserName = async (data: PatchUserName) => {
-  const response = await apiClient.get(`/users/${data.id}`);
+export const patchUserName = async (data: PatchUserNameType) => {
+  const response = await apiClient.patch(`/users/${data.id}`, data);
   console.log("👀 patchUserName response", response);
   return response.data;
 };
