@@ -27,7 +27,7 @@ AMPLIFY="{\
 \"projectName\":\"frontend\",\
 \"appId\":\"$APP_ID\",\
 \"envName\":\"dev\",\
-\"defaultEditor\":\"IntelliJ IDEA\"\
+\"defaultEditor\":\"code\"\
 }"
 FRONTEND="{\
 \"frontend\":\"javascript\",\

@@ -22,6 +22,7 @@ import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
 
 import { PatchUserNameType } from "../type";
+import { Auth } from "aws-amplify";
 
 const AllRollingPapers = () => {
   const { personalPath } = useParams();
@@ -168,6 +169,7 @@ const AllRollingPapers = () => {
       </div>
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}
       {showStickersModal && <Characters createOrUpdate={createOrUpdate} />}
+      <button onClick={() => Auth.signOut()}>여기!</button>
     </div>
   );
 };

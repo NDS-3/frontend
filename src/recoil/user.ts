@@ -7,9 +7,15 @@ const { persistAtom } = recoilPersist();
 export const ownerState = atom<OwnerType>({
   key: "ownerState",
   default: {
-    id: 1,
-    username: "기본이름",
-    personalUrl: "sGY2u_NeYOs7j_OUlgyVSA",
+    id: -1,
+    username: "",
+    personalUrl: "",
   },
-  // effects_UNSTABLE: [persistAtom],
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const googleJWTState = atom<string>({
+  key: "googleJWTState",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
 });
