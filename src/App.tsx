@@ -3,9 +3,10 @@ import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import AllRollingPapers from "./pages/AllRollingPapers";
 import { Auth, Hub } from "aws-amplify";
 import SignIn from "./pages/SignIn";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
+import { useQuery } from "react-query";
 
 function App() {
   const navigate = useNavigate();
@@ -13,20 +14,18 @@ function App() {
   const [jwt, setJwt] = useRecoilState(googleJWTState);
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
 
-  const resetUserInfo = useResetRecoilState(ownerState);
+  useQuery(["getUrlByToken", jwt], () => getUrl(jwt), {
+    onSuccess: (data) => {
+      setUserInfo({ ...data, id: userInfo.id });
+      navigate(`/${data.personalUrl}`);
+    },
+    enabled: !!jwt || false,
+  });
 
   const getUser = async () => {
     try {
       const token = await Auth.currentAuthenticatedUser();
       setJwt(token.getSignInUserSession().getAccessToken().getJwtToken());
-      getUrl(jwt)
-        .then((data) => {
-          setUserInfo({ ...data, id: userInfo.id });
-          navigate(`/${data.personalUrl}`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     } catch (err) {
       console.log(err);
     }
@@ -35,22 +34,13 @@ function App() {
   useEffect(() => {
     Hub.listen("auth", ({ payload }) => {
       if (payload.event === "signIn") return getUser();
-      else if (payload.event === "signOut") return resetUserInfo();
+      // else if (payload.event === "signOut") return setJwt("");
     });
   }, []);
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          userInfo.username ? (
-            <Navigate replace to={`/${userInfo.personalUrl}`} />
-          ) : (
-            <SignIn />
-          )
-        }
-      ></Route>
+      <Route path="/" element={<SignIn />} />
       <Route path="/:personalPath" element={<AllRollingPapers />} />
     </Routes>
   );
