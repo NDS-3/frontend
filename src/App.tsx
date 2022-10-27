@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import AllRollingPapers from "./pages/AllRollingPapers";
 import { Auth, Hub } from "aws-amplify";
 import SignIn from "./pages/SignIn";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
 import { useQuery } from "react-query";
@@ -15,12 +15,12 @@ function App() {
   const [flag, setFlag] = useState(false);
 
   const [jwt, setJwt] = useRecoilState(googleJWTState);
-  const [userInfo, setUserInfo] = useRecoilState(ownerState);
+  const setUserInfo = useSetRecoilState(ownerState);
 
-  useQuery(["getUrlByToken", jwt], () => getUrl(jwt), {
+  useQuery(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
     onSuccess: (data) => {
       setFlag(false);
-      setUserInfo({ ...data, id: userInfo.id });
+      setUserInfo({ ...data });
       navigate(`/${data.personalUrl}`);
     },
     enabled: flag && !!jwt,
@@ -48,7 +48,10 @@ function App() {
     <Routes>
       <Route path="/" element={<GhostHome />} />
       <Route path="/signin" element={<SignIn />} />
-      <Route path="/:personalPath" element={<AllRollingPapers />} />
+      <Route
+        path="/:personalPath"
+        element={<AllRollingPapers setGetUrlFlag={setFlag} />}
+      />
     </Routes>
   );
 }
