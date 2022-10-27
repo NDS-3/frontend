@@ -1,5 +1,3 @@
-import React from "react";
-
 interface IProps {
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;

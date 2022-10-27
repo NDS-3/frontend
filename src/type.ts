@@ -3,6 +3,14 @@ export interface StickerType {
   imageUrl: string;
 }
 
+export interface getUSerInfoType {
+  id: number;
+  username: string;
+}
+
+export interface OwnerType extends getUSerInfoType {
+  personalUrl: string;
+}
 export interface AllLetterType {
   id: number;
   sticker: StickerType;
@@ -25,14 +33,8 @@ export interface PatchLetterType {
   content: string;
 }
 
-export interface OwnerType {
-  id: number;
-  username: string;
-  personalUrl: string;
-}
-
 export interface PatchUserNameType {
-  id: number;
+  jwt?: string;
   username: string;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { letterState } from "../recoil/letter";
 import { EachLetterType } from "../type";
@@ -43,8 +43,8 @@ const _Write = ({ createOrUpdate }: IProps) => {
       const passwordTrim = inputPassword.trim();
       const len = passwordTrim.length;
       const regex = /^[a-zA-Z0-9가-힣]*$/;
-      if (len < 4 || len > 8 || regex.test(passwordTrim))
-        return alert("4자 ~ 8자의 한글과 영어로 입력하세요");
+      if (len < 4 || len > 8 || !regex.test(passwordTrim))
+        return alert("비밀번호는 4자 ~ 8자의 한글과 영어로 입력하세요");
       else return createLetter();
     }
     return updateLetter();

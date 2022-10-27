@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { AllLetterType } from "../type";
+import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
@@ -9,7 +9,7 @@ import { googleJWTState, ownerState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
-import { getUrl, getUserInfo } from "../api/user";
+import { getUserInfo } from "../api/user";
 
 import Characters from "../components/Characters";
 import Password from "../components/Password";
@@ -21,14 +21,14 @@ import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
 
-import { PatchUserNameType } from "../type";
-import { Auth } from "aws-amplify";
+interface IProps {
+  setGetUrlFlag: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const AllRollingPapers = () => {
+const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const { personalPath } = useParams();
   const navigate = useNavigate();
 
-  const [myLink, setMyLink] = useState("");
   const [pumpkinPage, setPumpkinPage] = useState(0);
   const [createOrUpdate, setCreateOrUpdate] = useState("create");
 
@@ -42,21 +42,19 @@ const AllRollingPapers = () => {
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
 
-  useQuery<PatchUserNameType, Error>(
-    ["getUserInfo", userInfo.personalUrl, personalPath],
+  useQuery<getUSerInfoType>(
+    ["getUserInfo", personalPath],
     () => getUserInfo(personalPath || ""),
     {
       onSuccess: (data) => {
         console.log("🎁 Success getUserInfo:", data);
         setUserInfo({ ...data, personalUrl: personalPath || "" });
-        if (!!!myLink.length)
-          setMyLink("http://localhost:3000/" + personalPath);
       },
     }
   );
 
-  useQuery<AllLetterType[], Error>(
-    ["getLetterList", pumpkinPage],
+  useQuery<AllLetterType[]>(
+    ["getLetterList", pumpkinPage, userInfo.id],
     () => getLetterList(userInfo.id, pumpkinPage),
     {
       onSuccess: (data) => {
@@ -66,11 +64,13 @@ const AllRollingPapers = () => {
       onError: (err) => {
         console.log("🎃 Error getLetterList:", err);
       },
+      enabled: userInfo.id > 0,
     }
   );
 
-  const copyLink = () => {
-    window.navigator.clipboard.writeText(myLink);
+  const copyLink = (tar: any) => {
+    const { innerText } = tar;
+    window.navigator.clipboard.writeText(innerText);
   };
 
   const clickPumpkin = (flag: boolean, id: number) => {
@@ -115,27 +115,21 @@ const AllRollingPapers = () => {
 
     if (!!jwt) {
       const clickLogout = () => {
-        // Auth.signOut();
         setJwt("");
+        localStorage.clear();
       };
 
       const clickMypage = () => {
         // jwt 담아서 url 가져오고 navigate
-        getUrl(jwt)
-          .then((data) => {
-            console.log("data!!", data);
-            navigate(`/${data.personalUrl}`);
-            // setUserInfo({ ...userInfo, personalUrl: data.personalUrl });
-          })
-          .catch((err) => console.log(err));
+        setGetUrlFlag(true);
       };
 
       return (
         <div className={divStyle}>
-          <button onClick={clickLogout} className={buttonStyle}>
+          <button onClick={() => clickLogout()} className={buttonStyle}>
             logout
           </button>
-          <button onClick={clickMypage} className={buttonStyle}>
+          <button onClick={() => clickMypage()} className={buttonStyle}>
             my rollingpaper
           </button>
         </div>
@@ -147,7 +141,7 @@ const AllRollingPapers = () => {
       };
       return (
         <div className={divStyle}>
-          <button onClick={clickLogin} className={buttonStyle}>
+          <button onClick={() => clickLogin()} className={buttonStyle}>
             login
           </button>
         </div>
@@ -201,9 +195,9 @@ const AllRollingPapers = () => {
         <p className="text-white text-2xl">링크를 공유하세요</p>
         <button
           className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold"
-          onClick={() => copyLink()}
+          onClick={(e) => copyLink(e.target)}
         >
-          {myLink}
+          {`http://localhost:3000/${userInfo.personalUrl}`}
         </button>
       </div>
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}

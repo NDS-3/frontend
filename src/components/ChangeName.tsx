@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
-import { ownerState } from "../recoil/user";
+import { googleJWTState, ownerState } from "../recoil/user";
 import { patchUserName } from "../api/user";
 import { useMutation } from "react-query";
 
 const ChangeName = () => {
   const [newName, setNewName] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
+  const [jwt] = useRecoilState(googleJWTState);
   const setShowModal = useSetRecoilState(showModalState);
 
   const { mutate: patchUserNameMutation } = useMutation(patchUserName, {
@@ -28,7 +29,7 @@ const ChangeName = () => {
     if (len < 2 || len > 120)
       return alert("2자 ~ 8자의 한글과 영어로 입력하세요");
     else {
-      const data = { id: userInfo.id, username: nameTrim };
+      const data = { username: nameTrim, jwt };
       patchUserNameMutation(data);
       setShowModal("닫기");
     }

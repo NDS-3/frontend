@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { stickerListState } from "../recoil/sticker";
 import { StickerType } from "../type";

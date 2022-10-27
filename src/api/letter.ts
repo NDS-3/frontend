@@ -20,15 +20,14 @@ export const getLetterWithPassword = async (data: GetLetterType) => {
 export const postLetter = async (data: PostLetterType) => {
   const { id } = data;
   delete data.id;
-  console.log("data:", data);
   const response = await apiClient.post(`/users/${id}/letters`, data);
   return response.data;
-}; // ✔
+};
 
 export const patchLetter = async (data: PatchLetterType) => {
   const response = await apiClient.patch(`/letters/${data.letterId}`, data);
   return response.data;
-}; // ✔
+};
 
 export const deleteLetter = async (letterId: number) => {
   const response = await apiClient.delete(`/letters/${letterId}`);
