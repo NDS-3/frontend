@@ -23,8 +23,6 @@ export const getUrl = async (token: string) => {
 export const patchUserName = async (data: PatchUserNameType) => {
   const { jwt } = data;
   delete data.jwt;
-  console.log(jwt);
-  console.log(data);
   const response = await apiClient.patch("/users/me", data, {
     headers: {
       Authorization: `Bearer ${jwt}`,
