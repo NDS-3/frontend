@@ -1,21 +1,15 @@
-import { Auth } from "aws-amplify";
-import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth/lib/types";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 const GoogleSignIn = () => {
-  function onClickSignIn() {
-    return () =>
-      Auth.federatedSignIn({
-        provider: CognitoHostedUIIdentityProvider.Google,
-      });
-  }
-
   return (
-    <button onClick={onClickSignIn()}>
-      <img
-        alt="google login"
-        src="https://user-images.githubusercontent.com/1531669/41761606-83b5bd42-762a-11e8-811a-b78fdf68bc04.png"
-      />
-    </button>
+    <div className="w-screen h-screen grid place-items-center bg-[#473466]">
+      <div className="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+          로그인하여 롤링페이퍼를 만드세요
+        </p>
+        <GoogleLoginButton />
+      </div>
+    </div>
   );
 };
 export default GoogleSignIn;
