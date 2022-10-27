@@ -12,6 +12,7 @@ export const getStickers = async () => {
 };
 
 export const getUrl = async (token: string) => {
+  console.log("here!");
   const response = await apiClient.get("/users/me/encryption", {
     headers: {
       Authorization: `Bearer ${token}`,

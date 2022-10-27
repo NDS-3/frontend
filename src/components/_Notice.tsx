@@ -1,4 +1,3 @@
-import React from "react";
 import { useSetRecoilState } from "recoil";
 import { showStickerModalState } from "../recoil/modal";
 

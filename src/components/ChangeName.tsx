@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { ownerState } from "../recoil/user";

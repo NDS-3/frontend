@@ -1,4 +1,3 @@
-import React from "react";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { letterState } from "../recoil/letter";

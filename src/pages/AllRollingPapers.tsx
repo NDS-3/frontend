@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType } from "../type";
@@ -22,7 +22,6 @@ import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
 
 import { PatchUserNameType } from "../type";
-import { Auth } from "aws-amplify";
 
 const AllRollingPapers = () => {
   const { personalPath } = useParams();
@@ -43,11 +42,12 @@ const AllRollingPapers = () => {
   const resetLetter = useResetRecoilState(letterState);
 
   useQuery<PatchUserNameType, Error>(
-    ["getUserInfo", userInfo.personalUrl, personalPath],
+    ["getUserInfo"],
     () => getUserInfo(personalPath || ""),
     {
       onSuccess: (data) => {
         console.log("🎁 Success getUserInfo:", data);
+        // data: {username: string, id: number};
         setUserInfo({ ...data, personalUrl: personalPath || "" });
         if (!!!myLink.length)
           setMyLink("http://localhost:3000/" + personalPath);
@@ -56,7 +56,7 @@ const AllRollingPapers = () => {
   );
 
   useQuery<AllLetterType[], Error>(
-    ["getLetterList", pumpkinPage],
+    ["getLetterList", pumpkinPage, myLink],
     () => getLetterList(userInfo.id, pumpkinPage),
     {
       onSuccess: (data) => {
@@ -66,6 +66,7 @@ const AllRollingPapers = () => {
       onError: (err) => {
         console.log("🎃 Error getLetterList:", err);
       },
+      enabled: !!myLink,
     }
   );
 
@@ -117,6 +118,8 @@ const AllRollingPapers = () => {
       const clickLogout = () => {
         // Auth.signOut();
         setJwt("");
+        // setUserInfo({ ...userInfo, personalUrl: "" });
+        localStorage.clear();
       };
 
       const clickMypage = () => {
@@ -132,10 +135,10 @@ const AllRollingPapers = () => {
 
       return (
         <div className={divStyle}>
-          <button onClick={clickLogout} className={buttonStyle}>
+          <button onClick={() => clickLogout()} className={buttonStyle}>
             logout
           </button>
-          <button onClick={clickMypage} className={buttonStyle}>
+          <button onClick={() => clickMypage()} className={buttonStyle}>
             my rollingpaper
           </button>
         </div>
@@ -147,7 +150,7 @@ const AllRollingPapers = () => {
       };
       return (
         <div className={divStyle}>
-          <button onClick={clickLogin} className={buttonStyle}>
+          <button onClick={() => clickLogin()} className={buttonStyle}>
             login
           </button>
         </div>

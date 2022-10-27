@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { getLetterWithPassword } from "../api/letter";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ownerState } from "../recoil/user";
