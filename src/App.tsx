@@ -7,6 +7,7 @@ import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
 import { useQuery } from "react-query";
+import GhostHome from "./pages/GhostHome";
 
 function App() {
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<SignIn />} />
+      <Route path="/" element={<GhostHome />} />
+      <Route path="/signin" element={<SignIn />} />
       <Route path="/:personalPath" element={<AllRollingPapers />} />
     </Routes>
   );
