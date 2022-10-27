@@ -34,17 +34,17 @@ const _Write = ({ createOrUpdate }: IProps) => {
 
   const clickButton = () => {
     const contentLen = newLetter.content.trim().length;
-    if (contentLen === 0) return alert("편지내용을 입력하세요");
-    else if (contentLen < 20 || contentLen > 200)
+    if (contentLen < 20 || contentLen > 200)
       return alert(
         `편지 내용을 20자 이상, 200자 이내로 입력하세요\n${contentLen}자 입력했습니다`
       );
 
     if (createOrUpdate === "create") {
-      const passwordLen = inputPassword.trim().length;
-      if (passwordLen === 0) return alert("비밀번호를 입력하세요");
-      else if (passwordLen > 8 || passwordLen < 4)
-        return alert("4 ~ 8자리 사이의 비밀번호를 입력하세요");
+      const passwordTrim = inputPassword.trim();
+      const len = passwordTrim.length;
+      const regex = /^[a-zA-Z0-9가-힣]*$/;
+      if (len < 4 || len > 8 || regex.test(passwordTrim))
+        return alert("4자 ~ 8자의 한글과 영어로 입력하세요");
       else return createLetter();
     }
     return updateLetter();

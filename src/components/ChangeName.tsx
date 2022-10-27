@@ -24,11 +24,14 @@ const ChangeName = () => {
   const changeOwnerName = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const nameTrim = newName.trim();
-    if (!!nameTrim) {
+    const len = nameTrim.length;
+    if (len < 2 || len > 120)
+      return alert("2자 ~ 8자의 한글과 영어로 입력하세요");
+    else {
       const data = { id: userInfo.id, username: nameTrim };
       patchUserNameMutation(data);
+      setShowModal("닫기");
     }
-    setShowModal("닫기");
   };
 
   return (

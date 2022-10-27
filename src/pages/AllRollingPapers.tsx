@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
-import { ownerState } from "../recoil/user";
+import { googleJWTState, ownerState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
-import { getUserInfo } from "../api/user";
+import { getUrl, getUserInfo } from "../api/user";
 
 import Characters from "../components/Characters";
 import Password from "../components/Password";
@@ -22,9 +22,11 @@ import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
 
 import { PatchUserNameType } from "../type";
+import { Auth } from "aws-amplify";
 
 const AllRollingPapers = () => {
   const { personalPath } = useParams();
+  const navigate = useNavigate();
 
   const [myLink, setMyLink] = useState("");
   const [pumpkinPage, setPumpkinPage] = useState(0);
@@ -35,25 +37,20 @@ const AllRollingPapers = () => {
   const [letter, setLetter] = useRecoilState(letterState);
   const [showModal] = useRecoilState(showModalState); // 닫기, 안내, 쓰기, 비번, 읽기, 수정
   const [showStickersModal] = useRecoilState(showStickerModalState);
+  const [jwt, setJwt] = useRecoilState(googleJWTState);
 
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
 
-  useEffect(() => {
-    setMyLink("http://localhost:3000/" + personalPath);
-    // setPumpkinList(dummyPumpkinList);
-  }, []);
-
   useQuery<PatchUserNameType, Error>(
-    "getUserInfo",
+    ["getUserInfo", userInfo.personalUrl, personalPath],
     () => getUserInfo(personalPath || ""),
     {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      retry: false,
       onSuccess: (data) => {
         console.log("🎁 Success getUserInfo:", data);
         setUserInfo({ ...data, personalUrl: personalPath || "" });
+        if (!!!myLink.length)
+          setMyLink("http://localhost:3000/" + personalPath);
       },
     }
   );
@@ -62,9 +59,6 @@ const AllRollingPapers = () => {
     ["getLetterList", pumpkinPage],
     () => getLetterList(userInfo.id, pumpkinPage),
     {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      retry: false,
       onSuccess: (data) => {
         console.log("🎁 Success getLetterListData:", data);
         setPumpkinList(data);
@@ -90,6 +84,12 @@ const AllRollingPapers = () => {
     }
   };
 
+  const changeName = () => {
+    if (userInfo.id > 0) {
+      setShowModal("이름");
+    }
+  };
+
   const ModalCase = () => {
     switch (showModal) {
       case "비번":
@@ -109,9 +109,49 @@ const AllRollingPapers = () => {
     }
   };
 
-  const changeName = () => {
-    if (userInfo.id > 0) {
-      setShowModal("이름");
+  const ButtonForUser = () => {
+    const divStyle = "fixed top-3 right-0";
+    const buttonStyle = "mr-5";
+
+    if (!!jwt) {
+      const clickLogout = () => {
+        // Auth.signOut();
+        setJwt("");
+      };
+
+      const clickMypage = () => {
+        // jwt 담아서 url 가져오고 navigate
+        getUrl(jwt)
+          .then((data) => {
+            console.log("data!!", data);
+            navigate(`/${data.personalUrl}`);
+            // setUserInfo({ ...userInfo, personalUrl: data.personalUrl });
+          })
+          .catch((err) => console.log(err));
+      };
+
+      return (
+        <div className={divStyle}>
+          <button onClick={clickLogout} className={buttonStyle}>
+            logout
+          </button>
+          <button onClick={clickMypage} className={buttonStyle}>
+            my rollingpaper
+          </button>
+        </div>
+      );
+    } else {
+      // 토큰이 없으면?
+      const clickLogin = () => {
+        navigate("/");
+      };
+      return (
+        <div className={divStyle}>
+          <button onClick={clickLogin} className={buttonStyle}>
+            login
+          </button>
+        </div>
+      );
     }
   };
 
@@ -168,6 +208,7 @@ const AllRollingPapers = () => {
       </div>
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}
       {showStickersModal && <Characters createOrUpdate={createOrUpdate} />}
+      <ButtonForUser />
     </div>
   );
 };
