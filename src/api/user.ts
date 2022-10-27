@@ -21,10 +21,14 @@ export const getUrl = async (token: string) => {
 };
 
 export const patchUserName = async (data: PatchUserNameType) => {
-  const response = await apiClient.patch(`/users/${data.id}`, data, {
-    // headers: {
-    //   Authorization: `Bearer ${token}`,
-    // }
+  const { jwt } = data;
+  delete data.jwt;
+  console.log(jwt);
+  console.log(data);
+  const response = await apiClient.patch("/users/me", data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
   });
   return response.data;
 };

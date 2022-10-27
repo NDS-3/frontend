@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { AllLetterType, PatchUserNameType } from "../type";
+import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
@@ -42,7 +42,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
 
-  useQuery<PatchUserNameType>(
+  useQuery<getUSerInfoType>(
     ["getUserInfo", personalPath],
     () => getUserInfo(personalPath || ""),
     {
