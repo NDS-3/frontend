@@ -85,7 +85,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const changeName = () => {
-    if (userInfo.id > 0) {
+    if (jwt.length > 0) {
       setShowModal("이름");
     }
   };
