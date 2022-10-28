@@ -85,7 +85,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const changeName = () => {
-    if (userInfo.id > 0) {
+    if (jwt.length > 0) {
       setShowModal("이름");
     }
   };
@@ -152,7 +152,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   return (
     <div className="h-screen w-screen relative flex flex-col justify-evenly text-center">
       <img
-        src={`${process.env.PUBLIC_URL}/img/background02.png`}
+        src={`${process.env.PUBLIC_URL}/img/background.png`}
         alt="bg"
         className="absolute left-0 top-0 -z-50 h-full w-full"
       />

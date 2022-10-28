@@ -5,7 +5,7 @@ const GhostHome = () => {
     <>
       <div className="h-screen w-screen relative flex flex-col justify-evenly text-center">
         <img
-          src={`${process.env.PUBLIC_URL}/img/ghost01.png`}
+          src={`${process.env.PUBLIC_URL}/img/ghost.png`}
           alt="bg"
           className="absolute left-0 top-0 -z-50 h-full w-full bg-[#473466]"
         />
