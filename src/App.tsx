@@ -12,7 +12,7 @@ import GhostHome from "./pages/GhostHome";
 function App() {
   const navigate = useNavigate();
 
-  const [flag, setFlag] = useState(false);
+  const [flag, setFlag] = useState(true);
 
   const [jwt, setJwt] = useRecoilState(googleJWTState);
   const setUserInfo = useSetRecoilState(ownerState);
@@ -28,17 +28,15 @@ function App() {
 
   useEffect(() => {
     Hub.listen("auth", ({ payload }) => {
-      if (payload.event === "signIn") return getUser();
-      // else if (payload.event === "signOut") return setJwt("");
+      if (payload.event === "signIn") return getUserFromGoogle();
     });
 
-    const getUser = async () => {
+    const getUserFromGoogle = async () => {
       try {
-        setFlag(true);
         const token = await Auth.currentAuthenticatedUser();
+        console.log("✅getToken:", token);
         setJwt(token.getSignInUserSession().getAccessToken().getJwtToken());
       } catch (err) {
-        setFlag(false);
         console.log(err);
       }
     };
