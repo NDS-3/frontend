@@ -19,11 +19,12 @@ function App() {
 
   useQuery(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
     onSuccess: (data) => {
+      console.log("✅ getUrlByToken:", data);
       setFlag(false);
       setUserInfo({ ...data });
       navigate(`/${data.personalUrl}`);
     },
-    enabled: flag && !!jwt,
+    enabled: jwt.length > 0 && flag,
   });
 
   useEffect(() => {

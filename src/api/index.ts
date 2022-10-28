@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const baseURL = "http://localhost:8000";
-const baseURL = "api.hjjeong.xyz";
+const baseURL = "http://api.hjjeong.xyz";
 // const baseURL =
 //   "https://project-alb-988978620.ap-northeast-2.elb.amazonaws.com";
 
