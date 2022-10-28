@@ -1,9 +1,7 @@
 import axios from "axios";
-// import { googleJWTState } from "../recoil/user";
-// import { useRecoilState } from "recoil";
 
-const baseURL = "http://localhost:8000";
-// const [jwt] = useRecoilState(googleJWTState);
+// const baseURL = "http://localhost:8000";
+const baseURL = "Project-ALB-988978620.ap-northeast-2.elb.amazonaws.com";
 
 export const apiClient = axios.create({
   baseURL,
@@ -18,12 +16,3 @@ export const tApiClient = axios.create({
     "Content-type": "application/json",
   },
 });
-
-// tApiClient.interceptors.request.use(function tkInterceptorRequest(config) {
-//   return {
-//     ...config,
-//     headers: {
-//       Authorization: `Bearer ${jwt}`,
-//     },
-//   };
-// });

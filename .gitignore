@@ -25,6 +25,10 @@ yarn-error.log*
 .idea
 .vscode
 
+
+amplify/
+amplify-backup/
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -45,6 +49,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-amplify/
-amplify-backup/
