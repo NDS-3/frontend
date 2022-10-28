@@ -50,6 +50,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         console.log("🎁 Success getUserInfo:", data);
         setUserInfo({ ...data, personalUrl: personalPath || "" });
       },
+      enabled: !!personalPath,
     }
   );
 
