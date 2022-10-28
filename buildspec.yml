@@ -14,14 +14,14 @@ phases:
   post_build:
     commands:
       # copy the contents of /build to S3
-      - aws s3 cp --recursive --acl public-read ./build s3://myreactapp-2131321353/
+      - aws s3 cp --recursive --acl public-read ./build s3://project-frontend-3team/
 
       # set the cache-control headers for index.html to prevent
       # browser caching
       - >
         aws s3 cp --acl public-read 
         --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
-        ./build/index.html s3://myreactapp-2131321353/
+        ./build/index.html s3://project-frontend-3team/
 artifacts:
   files:
     - '**/*'
