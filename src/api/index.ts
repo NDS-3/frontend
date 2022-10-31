@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseURL = "http://localhost:8000";
-const baseURL = "http://api.hjjeong.xyz";
+const baseURL = "http://localhost:8000";
+// const baseURL = "http://api.hjjeong.xyz";
 // const baseURL = "http://project-alb-988978620.ap-northeast-2.elb.amazonaws.com";
 
 export const apiClient = axios.create({
