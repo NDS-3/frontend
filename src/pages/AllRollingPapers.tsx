@@ -9,7 +9,7 @@ import { googleJWTState, ownerState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
-import { getUserInfo } from "../api/user";
+import { getUrl, getUserInfo } from "../api/user";
 
 import Characters from "../components/Characters";
 import Password from "../components/Password";
@@ -38,6 +38,8 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const [showModal] = useRecoilState(showModalState); // 닫기, 안내, 쓰기, 비번, 읽기, 수정
   const [showStickersModal] = useRecoilState(showStickerModalState);
   const [jwt, setJwt] = useRecoilState(googleJWTState);
+
+  const [changeNameFlag, setChangeNameFlag] = useState(false);
 
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
@@ -69,6 +71,14 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     }
   );
 
+  useQuery(["checkForChnageName", changeNameFlag], () => getUrl(jwt), {
+    onSuccess: ({ personalUrl }) => {
+      setChangeNameFlag(false);
+      if (personalUrl === personalPath) setShowModal("이름");
+    },
+    enabled: changeNameFlag,
+  });
+
   const copyLink = (tar: any) => {
     const { innerText } = tar;
     window.navigator.clipboard.writeText(innerText);
@@ -86,9 +96,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const changeName = () => {
-    if (jwt.length > 0) {
-      setShowModal("이름");
-    }
+    setChangeNameFlag(true);
   };
 
   const ModalCase = () => {
@@ -121,7 +129,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       };
 
       const clickMypage = () => {
-        // jwt 담아서 url 가져오고 navigate
         setGetUrlFlag(true);
       };
 
@@ -136,7 +143,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         </div>
       );
     } else {
-      // 토큰이 없으면?
       const clickLogin = () => {
         navigate("/");
       };

@@ -36,7 +36,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
     const contentLen = newLetter.content.trim().length;
     if (contentLen < 20 || contentLen > 200)
       return alert(
-        `편지 내용을 20자 이상, 200자 이내로 입력하세요\n${contentLen}자 입력했습니다`
+        `공백을 포함하여 20자 이상, 200자 이내로 입력하세요\n${contentLen}자 입력했습니다`
       );
 
     if (createOrUpdate === "create") {

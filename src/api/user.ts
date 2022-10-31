@@ -12,7 +12,6 @@ export const getStickers = async () => {
 };
 
 export const getUrl = async (token: string) => {
-  console.log("getUrlByToken이 실행된다.");
   const response = await apiClient.get("/users/me/encryption", {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -12,7 +12,7 @@ import GhostHome from "./pages/GhostHome";
 function App() {
   const navigate = useNavigate();
 
-  const [flag, setFlag] = useState(true);
+  const [flag, setFlag] = useState(false);
 
   const [jwt, setJwt] = useRecoilState(googleJWTState);
   const setUserInfo = useSetRecoilState(ownerState);
@@ -36,6 +36,7 @@ function App() {
       try {
         const token = await Auth.currentAuthenticatedUser();
         console.log("✅getToken:", token);
+        setFlag(true);
         setJwt(token.getSignInUserSession().getAccessToken().getJwtToken());
       } catch (err) {
         console.log(err);
