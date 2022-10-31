@@ -1,6 +1,6 @@
 export const dummyPumpkinList = [
   {
-    letterId: 1,
+    id: 1,
     sticker: {
       id: 1,
       imageUrl:
@@ -8,7 +8,7 @@ export const dummyPumpkinList = [
     },
   },
   {
-    letterId: 2,
+    id: 2,
     sticker: {
       id: 2,
       imageUrl:
@@ -16,62 +16,20 @@ export const dummyPumpkinList = [
     },
   },
   {
-    letterId: 3,
+    id: 3,
     sticker: {
       id: 3,
       imageUrl:
         "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/butterfly.png",
     },
   },
-  {
-    letterId: 4,
-    sticker: {
-      id: 4,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 5,
-    sticker: {
-      id: 5,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 6,
-    sticker: {
-      id: 6,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 7,
-    sticker: {
-      id: 7,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 8,
-    sticker: {
-      id: 8,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 9,
-    sticker: {
-      id: 9,
-      imageUrl: "",
-    },
-  },
-  {
-    letterId: 10,
-    sticker: {
-      id: 10,
-      imageUrl: "",
-    },
-  },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
+  { id: -1, sticker: { id: -1, imageUrl: "" } },
 ];
 
 export const dummyPumpkin = {
@@ -151,7 +109,7 @@ export const dummyIconList = [
       "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/jester.png",
   },
   {
-    id: 13,
+    id: 14,
     imageUrl:
       "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/jester.png",
   },
