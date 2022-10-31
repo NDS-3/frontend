@@ -99,21 +99,23 @@ const _Write = ({ createOrUpdate }: IProps) => {
   };
 
   return (
-    <div className="flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-xl">
-      <img
-        src={
-          newLetter.sticker.imageUrl ||
-          "https://cdn.wadiz.kr/ft/images/green001/2021/1220/20211220134242960_16.jpg/wadiz/format/jpg/quality/80/optimize"
-        }
-        alt="sticker"
-        className="w-1/5 aspect-square cursor-pointer"
-        title="스티커 변경"
-        onClick={() => changeSticker()}
-      />
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 flex flex-col items-end">
+    <div className="flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full py-3">
+      <div className="w-1/5">
+        <img
+          className="aspect-square cursor-pointer"
+          src={
+            newLetter.sticker.imageUrl ||
+            "https://cdn.wadiz.kr/ft/images/green001/2021/1220/20211220134242960_16.jpg/wadiz/format/jpg/quality/80/optimize"
+          }
+          alt="sticker"
+          title="스티커 변경"
+          onClick={() => changeSticker()}
+        />
+      </div>
+      <div className="w-3/5 flex flex-col items-end">
         {createOrUpdate === "create" && (
           <input
-            className="p-2 mb-5 w-3/5 focus:outline-none focus:border-sky-500 focus:ring-sky-500"
+            className="p-2 w-3/5 focus:outline-none"
             value={inputPassword}
             type="password"
             autoFocus={createOrUpdate === "create"}
@@ -122,19 +124,18 @@ const _Write = ({ createOrUpdate }: IProps) => {
           />
         )}
         <textarea
-          className="p-2 w-full h-[500px] focus:outline-none focus:border-sky-500 focus:ring-sky-500"
+          className="mt-2 p-2 w-full h-full focus:outline-none"
           value={newLetter.content}
           placeholder="편지를 작성하세요"
           autoFocus={createOrUpdate === "update"}
-          required
           onChange={(e) =>
             setNewLetter({ ...newLetter, content: e.target.value })
           }
         />
       </div>
-      <div className="mb-[20px] mr-[20px] text-end">
+      <div className="w-1/5 relative">
         <button
-          className="py-1 px-3 rounded-lg shadow-md bg-orange-300"
+          className="absolute bottom-0 right-1 py-1 px-3 rounded-lg shadow-md bg-orange-300"
           onClick={() => clickButton()}
         >
           {createOrUpdate === "create" ? "편지 보내기" : "편지 고치기"}
