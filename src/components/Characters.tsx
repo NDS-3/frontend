@@ -3,7 +3,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { stickerListState } from "../recoil/sticker";
 import { StickerType } from "../type";
 import { letterState } from "../recoil/letter";
-import PageController from "./PageController";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { getStickers } from "../api/user";
 import { useQuery } from "react-query";
@@ -40,13 +39,30 @@ const Characters = ({ createOrUpdate }: IProps) => {
     }
   };
 
+  const pageChange = (v: number) => {
+    const newPage = page + v;
+    if (newPage >= 0 && newPage <= 2) setPage(newPage);
+  };
+
   return (
-    <div className="w-2/3 h-2/3 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-5 bg-white rounded-lg">
-      <div className="h-full mx-auto">
-        <p className="mt-5 text-3xl">캐릭터를 선택하세요!</p>
-        <div className="w-4/5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid grid-cols-5">
+    <div className="flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-10 px-5 bg-white rounded-lg">
+      <div className="my-auto">
+        <img
+          className={
+            page < 1
+              ? "invisible cursor-pointer hover:scale-90 transition-all"
+              : "cursor-pointer hover:scale-90 transition-all"
+          }
+          src={`${process.env.PUBLIC_URL}/img/left.png`}
+          alt="left"
+          onClick={() => pageChange(-1)}
+        />
+      </div>
+      <div className="relative h-full w-full flex flex-col justify-center items-center">
+        <p className="text-3xl">캐릭터를 선택하세요!</p>
+        <div className="w-4/5 grid grid-cols-5 gap-3">
           {viewIcons.map((v) => (
-            <div key={v.id} className="my-10">
+            <div key={v.id} className="pt-10">
               <img
                 className="mx-auto cursor-pointer hover:scale-110 transition-all"
                 src={v.imageUrl}
@@ -57,7 +73,18 @@ const Characters = ({ createOrUpdate }: IProps) => {
           ))}
         </div>
       </div>
-      <PageController currentPage={page} setCurrentPage={setPage} />
+      <div className="my-auto">
+        <img
+          className={
+            page > 1
+              ? "invisible cursor-pointer hover:scale-90 transition-all"
+              : "cursor-pointer hover:scale-90 transition-all"
+          }
+          src={`${process.env.PUBLIC_URL}/img/right.png`}
+          alt="right"
+          onClick={() => pageChange(1)}
+        />
+      </div>
     </div>
   );
 };

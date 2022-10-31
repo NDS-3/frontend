@@ -170,7 +170,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       </div>
       <div className="w-4/5 mx-auto grid grid-cols-5">
         {pumpkinList.map((v, idx) => {
-          const flag = Object.keys(v).length > 0;
+          const flag = v.id > 0;
           const imageName = flag ? "full" : "empty";
           return (
             <div key={idx} className="w-1/2 m-1 relative h-1/1 aspect-square">
@@ -179,6 +179,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
                 alt={imageName}
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square cursor-pointer"
                 onClick={() => clickPumpkin(flag, v.id)}
+                title={flag ? "" : "편지를 써주세요"}
               />
               {flag && (
                 <img
