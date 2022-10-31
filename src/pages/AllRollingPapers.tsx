@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
@@ -79,9 +79,9 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     enabled: changeNameFlag,
   });
 
-  const copyLink = (tar: any) => {
-    const { innerText } = tar;
-    window.navigator.clipboard.writeText(innerText);
+  const copyLink = () => {
+    const text = window.location.href;
+    window.navigator.clipboard.writeText(text);
   };
 
   const clickPumpkin = (flag: boolean, id: number) => {
@@ -119,8 +119,9 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const ButtonForUser = () => {
-    const divStyle = "fixed top-3 right-0";
-    const buttonStyle = "mr-5";
+    const divStyle = "fixed top-5 right-0";
+    const buttonStyle =
+      "mr-5 py-1 px-3 rounded-lg shadow-md bg-orange-300 border border-solid border-black cursor-pointer hover:scale-105 transition-all";
 
     if (!!jwt) {
       const clickLogout = () => {
@@ -202,10 +203,10 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       <div>
         <p className="text-white text-xl">링크를 공유하세요</p>
         <button
-          className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold"
-          onClick={(e) => copyLink(e.target)}
+          className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold hover:font-bold"
+          onClick={() => copyLink()}
         >
-          {`http://localhost:3000/${userInfo.personalUrl}`}
+          {window.location.href}
         </button>
       </div>
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}
