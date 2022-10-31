@@ -15,7 +15,7 @@ const PageController = ({ currentPage, setCurrentPage }: IProps) => {
         <img
           src={`${process.env.PUBLIC_URL}/img/left.png`}
           alt="left"
-          className="absolute left-5 top-1/2 cursor-pointer"
+          className="absolute left-10 top-1/2 cursor-pointer hover:scale-90 transition-all"
           onClick={() => changePage(-1)}
         />
       )}
@@ -23,7 +23,7 @@ const PageController = ({ currentPage, setCurrentPage }: IProps) => {
         <img
           src={`${process.env.PUBLIC_URL}/img/right.png`}
           alt="right"
-          className="absolute right-5 top-1/2 cursor-pointer"
+          className="absolute right-10 top-1/2 cursor-pointer hover:scale-90 transition-all"
           onClick={() => changePage(+1)}
         />
       )}

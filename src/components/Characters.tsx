@@ -45,8 +45,8 @@ const Characters = ({ createOrUpdate }: IProps) => {
   };
 
   return (
-    <div className="flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-10 px-5 bg-white rounded-lg">
-      <div className="my-auto">
+    <div className="flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 py-8 bg-white rounded-lg">
+      <div className="my-auto pl-1">
         <img
           className={
             page < 1
@@ -60,7 +60,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
       </div>
       <div className="relative h-full w-full flex flex-col justify-center items-center">
         <p className="text-3xl">캐릭터를 선택하세요!</p>
-        <div className="w-4/5 grid grid-cols-5 gap-3">
+        <div className="w-4/5 grid grid-cols-5 gap-1">
           {viewIcons.map((v) => (
             <div key={v.id} className="pt-10">
               <img
@@ -73,7 +73,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
           ))}
         </div>
       </div>
-      <div className="my-auto">
+      <div className="my-auto pr-1">
         <img
           className={
             page > 1

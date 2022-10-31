@@ -168,22 +168,22 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         </div>
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
-      <div className="w-4/5 mx-auto grid grid-cols-5">
+      <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
         {pumpkinList.map((v, idx) => {
           const flag = v.id > 0;
           const imageName = flag ? "full" : "empty";
           return (
-            <div key={idx} className="w-1/2 m-1 relative h-1/1 aspect-square">
+            <div key={idx} className="m-1 relative">
               <img
+                className="w-3/5 aspect-square cursor-pointer mx-auto"
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt={imageName}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/1 aspect-square cursor-pointer"
                 onClick={() => clickPumpkin(flag, v.id)}
                 title={flag ? "" : "편지를 써주세요"}
               />
               {flag && (
                 <img
-                  className="absolute left-1/2 top-2/3 pb-2 -translate-x-1/2 -translate-y-1/2 w-3/5 cursor-pointer hover:scale-110 transition-all"
+                  className="absolute left-1/2 top-1/2 pb-5 -translate-x-1/2 -translate-y-1/3 w-1/2 cursor-pointer hover:scale-90 transition-all"
                   src={v.sticker.imageUrl}
                   alt="character"
                   onClick={() => clickPumpkin(flag, v.id)}
@@ -193,8 +193,8 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
           );
         })}
       </div>
-      <div className="mt-5">
-        <p className="text-white text-2xl">링크를 공유하세요</p>
+      <div>
+        <p className="text-white text-xl">링크를 공유하세요</p>
         <button
           className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold"
           onClick={(e) => copyLink(e.target)}
