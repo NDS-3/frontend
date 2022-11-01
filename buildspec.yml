@@ -4,9 +4,11 @@ phases:
     commands:
       - echo Installing source NPM dependencies...
       - npm install
-      - npm install -g @aws-amplify/cli
-      - chmod +x ./amplify-pull.sh
-      - ./amplify-pull.sh
+      - sudo yum install zip unzip openssl -y
+      - zip amplify.zip amplify
+      - openssl enc -d -aes-256-cbc -pbkdf2 -md sha256 -in src/aws-exports.js.secrets -out src/aws-exports.js -k ${SECRET_KEY}
+      - openssl enc -d -aes-256-cbc -pbkdf2 -md sha256 -in amplify.zip.secrets -out amplify.zip -k ${SECRET_KEY}
+      - unzip amplify.zip
   build:
     commands:
       - echo Build started on `date`
