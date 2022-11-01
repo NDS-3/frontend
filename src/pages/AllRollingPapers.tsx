@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
@@ -119,7 +119,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const ButtonForUser = () => {
-    const divStyle = "fixed top-5 right-0";
+    const divStyle = "fixed top-5 right-0 -z-50";
     const buttonStyle =
       "mr-5 py-1 px-3 rounded-lg shadow-md bg-orange-300 border border-solid border-black cursor-pointer hover:scale-105 transition-all";
 

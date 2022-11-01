@@ -33,7 +33,7 @@ export const dummyPumpkinList = [
 ];
 
 export const dummyPumpkin = {
-  letterId: 1,
+  id: 1,
   sticker: {
     id: 1,
     imageUrl: "https://nds.nongshim.co.kr/web/images/new_main/logo01.gif",
