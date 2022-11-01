@@ -4,10 +4,9 @@ phases:
     commands:
       - echo Installing source NPM dependencies...
       - npm install
-      - sudo yum update -y
       - sudo yum install unzip openssl -y
-      - openssl enc -d -aes-256-cbc -pbkdf2 -md sha256 -in src/aws-exports.js.secrets -out src/aws-exports.js -k $SECRET_KEY
-      - openssl enc -d -aes-256-cbc -pbkdf2 -md sha256 -in amplify.zip.secrets -out amplify.zip -k $SECRET_KEY
+      - openssl enc -d -aes-256-cbc -md sha256 -in src/aws-exports.js.secrets -out src/aws-exports.js -k $SECRET_KEY
+      - openssl enc -d -aes-256-cbc -md sha256 -in amplify.zip.secrets -out amplify.zip -k $SECRET_KEY
       - unzip amplify.zip
   build:
     commands:
