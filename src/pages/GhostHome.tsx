@@ -1,22 +1,16 @@
-import { Link } from "react-router-dom";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const GhostHome = () => {
   return (
     <>
-      <div className="h-screen w-screen relative flex flex-col justify-evenly text-center">
+      <div className="relative h-screen w-screen text-center">
         <img
-          src={`${process.env.PUBLIC_URL}/img/ghost.png`}
+          className="absolute left-0 top-0 h-full w-full -z-50"
+          src={`${process.env.PUBLIC_URL}/img/newbackground.png`}
           alt="bg"
-          className="absolute left-0 top-0 -z-50 h-full w-full bg-[#473466]"
         />
-        <div className="mt-20">
-          <Link
-            to="/signin"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            로그인
-          </Link>
-        </div>
+        <div className="bg-black absolute left-0 top-0 h-full w-full opacity-30" />
+        <GoogleLoginButton />
       </div>
     </>
   );
