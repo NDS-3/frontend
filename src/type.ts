@@ -38,7 +38,7 @@ export interface PatchUserNameType {
   username: string;
 }
 
-export interface GetLetterType {
+export interface GetLetterByPasswordType {
   id?: number;
   letterId?: number;
   password: string;

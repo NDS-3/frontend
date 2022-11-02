@@ -1,12 +1,16 @@
 import { apiClient } from ".";
-import { PatchLetterType, PostLetterType, GetLetterType } from "../type";
+import {
+  PatchLetterType,
+  PostLetterType,
+  GetLetterByPasswordType,
+} from "../type";
 
 export const getLetterList = async (id: number, page: number) => {
   const response = await apiClient.get(`/users/${id}/letters/?page=${page}`);
   return response.data;
 };
 
-export const getLetterWithPassword = async (data: GetLetterType) => {
+export const getLetterWithPassword = async (data: GetLetterByPasswordType) => {
   const { id, letterId } = data;
   delete data.id;
   delete data.letterId;
@@ -14,6 +18,15 @@ export const getLetterWithPassword = async (data: GetLetterType) => {
     `/users/${id}/letters/${letterId}`,
     data
   );
+  return response;
+};
+
+export const getMyLetter = async (letterId: number, jwt: string) => {
+  const response = await apiClient.get(`/letters/${letterId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
   return response;
 };
 

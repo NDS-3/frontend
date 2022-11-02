@@ -5,7 +5,7 @@ import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
-import { googleJWTState, ownerState } from "../recoil/user";
+import { googleJWTState, isOwnerState, ownerState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
@@ -17,6 +17,7 @@ import Modal from "../components/Modal";
 import _Notice from "../components/_Notice";
 import Letter from "../components/Letter";
 import _Content from "../components/_Content";
+import _myContent from "../components/_myContent";
 import _Write from "../components/_Write";
 import PageController from "../components/PageController";
 import ChangeName from "../components/ChangeName";
@@ -35,11 +36,10 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const [pumpkinList, setPumpkinList] = useRecoilState(viewLetterListState);
   const [letter, setLetter] = useRecoilState(letterState);
-  const [showModal] = useRecoilState(showModalState); // 닫기, 안내, 쓰기, 비번, 읽기, 수정
+  const [showModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
   const [showStickersModal] = useRecoilState(showStickerModalState);
   const [jwt, setJwt] = useRecoilState(googleJWTState);
-
-  const [changeNameFlag, setChangeNameFlag] = useState(false);
+  const [isOwner, setIsOwner] = useRecoilState(isOwnerState);
 
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
@@ -61,7 +61,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     () => getLetterList(userInfo.id, pumpkinPage),
     {
       onSuccess: (data) => {
-        console.log("🎁 Success getLetterListData:", data);
+        // console.log("🎁 Success getLetterListData:", data);
         setPumpkinList(data);
       },
       onError: (err) => {
@@ -71,12 +71,15 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     }
   );
 
-  useQuery(["checkForChnageName", changeNameFlag], () => getUrl(jwt), {
+  useQuery(["checkEncryption", personalPath], () => getUrl(jwt), {
     onSuccess: ({ personalUrl }) => {
-      setChangeNameFlag(false);
-      if (personalUrl === personalPath) setShowModal("이름");
+      if (personalUrl === personalPath) {
+        setIsOwner(true);
+      } else {
+        setIsOwner(false);
+      }
     },
-    enabled: changeNameFlag,
+    enabled: !!personalPath,
   });
 
   const copyLink = () => {
@@ -87,8 +90,14 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const clickPumpkin = (flag: boolean, id: number) => {
     setCreateOrUpdate(flag ? "update" : "create");
     if (flag) {
+      console.log(id + "로 요청 보내기");
       setLetter({ ...letter, id: id });
-      setShowModal("비번");
+      // 주인이고 **날짜**가 되었다면
+      if (isOwner) {
+        setShowModal("주인");
+      } else {
+        setShowModal("비번");
+      }
     } else {
       resetLetter();
       setShowModal("안내");
@@ -96,7 +105,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const changeName = () => {
-    setChangeNameFlag(true);
+    if (isOwner) setShowModal("이름");
   };
 
   const ModalCase = () => {
@@ -105,6 +114,9 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         return <Password />;
       case "읽기":
         return <Letter element={<_Content />} />;
+      case "주인":
+        // return <Letter element={<_myContent />} />;
+        return <Letter element={<_myContent />} />;
       case "안내":
         return <Letter element={<_Notice />} />;
       case "쓰기":
@@ -119,7 +131,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const ButtonForUser = () => {
-    const divStyle = "fixed top-5 right-0 -z-50";
+    const divStyle = "fixed top-5 right-0";
     const buttonStyle =
       "mr-5 py-1 px-3 rounded-lg shadow-md bg-orange-300 border border-solid border-black cursor-pointer hover:scale-105 transition-all";
 
@@ -168,6 +180,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         setCurrentPage={setPumpkinPage}
         currentPage={pumpkinPage}
       />
+      <ButtonForUser />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
         <div className="pb-4">
           <span onClick={() => changeName()}>{userInfo.username}</span>
@@ -176,8 +189,8 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
-        {pumpkinList.map((v, idx) => {
-          const flag = v.id > 0;
+        {pumpkinList.map((letter, idx) => {
+          const flag = letter.id > 0;
           const imageName = flag ? "full" : "empty";
           return (
             <div key={idx} className="m-1 relative">
@@ -185,15 +198,15 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
                 className="w-3/5 aspect-square cursor-pointer mx-auto"
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
                 alt={imageName}
-                onClick={() => clickPumpkin(flag, v.id)}
+                onClick={() => clickPumpkin(flag, letter.id)}
                 title={flag ? "" : "편지를 써주세요"}
               />
               {flag && (
                 <img
-                  className="absolute left-1/2 top-1/2 pb-5 -translate-x-1/2 -translate-y-1/3 w-1/2 cursor-pointer hover:scale-90 transition-all"
-                  src={v.sticker.imageUrl}
+                  className="absolute left-1/2 top-1/2 pb-5 -translate-x-1/2 -translate-y-1/3 w-1/2 cursor-pointer hover:scale-110 transition-all"
+                  src={letter.sticker.imageUrl}
                   alt="character"
-                  onClick={() => clickPumpkin(flag, v.id)}
+                  onClick={() => clickPumpkin(flag, letter.id)}
                 />
               )}
             </div>
@@ -211,7 +224,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       </div>
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}
       {showStickersModal && <Characters createOrUpdate={createOrUpdate} />}
-      <ButtonForUser />
     </div>
   );
 };
