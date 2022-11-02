@@ -28,12 +28,29 @@ const _myContent = () => {
     if (!flag) setFlag(true);
   }, []);
 
-  const letterCapture = () => {
-    alert("아직 안만들었어요");
+  const clickLetterCapture = () => {
+    // const element: any = document.getElementById("capture-letter");
+    // const element: any = document.getElementById("my-modal");
+    const element: HTMLElement | null = document.getElementById("root");
+    if (!!element) {
+      html2canvas(element).then((canvas: HTMLCanvasElement) => {
+        onSaveAs(canvas.toDataURL("image/jpeg"), "rolling-paper.jpg");
+      });
+    }
+  };
+
+  const onSaveAs = (url: string, filename: string) => {
+    const a: HTMLAnchorElement = document.createElement("a");
+    a.href = url.replace("image/jpeg", "image/octet-stream");
+    a.download = filename;
+    a.click();
   };
 
   return (
-    <div className="w-full h-full text-white text-xl py-3 flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div
+      className="w-full h-full text-white text-xl py-3 flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      id="capture-letter"
+    >
       <div className="h-1/5">
         <img
           className="h-full aspect-square"
@@ -47,7 +64,7 @@ const _myContent = () => {
       <div className="mr-1 flex justify-end">
         <button
           className="py-1 px-3 mr-5 rounded-lg shadow-md bg-orange-300"
-          onClick={() => letterCapture()}
+          onClick={() => clickLetterCapture()}
         >
           편지 캡처
         </button>

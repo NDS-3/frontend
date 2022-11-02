@@ -24,6 +24,7 @@ const Modal = ({ element }: IProps) => {
   return (
     <div
       className="absolute w-screen h-screen bg-black/70"
+      id="my-modal"
       onClick={() => closeModal()}
     >
       <span onClick={(e) => blockEvent(e)}>{element}</span>
