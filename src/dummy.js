@@ -1,4 +1,4 @@
-export const dummyPumpkinList = [
+export const dummyLetterList = [
   {
     id: 1,
     sticker: {
@@ -32,7 +32,7 @@ export const dummyPumpkinList = [
   { id: -1, sticker: { id: -1, imageUrl: "" } },
 ];
 
-export const dummyPumpkin = {
+export const dummyLetter = {
   id: 1,
   sticker: {
     id: 1,
