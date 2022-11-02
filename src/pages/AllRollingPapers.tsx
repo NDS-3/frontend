@@ -30,11 +30,11 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const { personalPath } = useParams();
   const navigate = useNavigate();
 
-  const [pumpkinPage, setPumpkinPage] = useState(0);
+  const [letterPage, setLetterPage] = useState(0);
   const [createOrUpdate, setCreateOrUpdate] = useState("create");
 
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
-  const [pumpkinList, setPumpkinList] = useRecoilState(viewLetterListState);
+  const [letterList, setLetterList] = useRecoilState(viewLetterListState);
   const [letter, setLetter] = useRecoilState(letterState);
   const [showModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
   const [showStickersModal] = useRecoilState(showStickerModalState);
@@ -57,12 +57,12 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   );
 
   useQuery<AllLetterType[]>(
-    ["getLetterList", pumpkinPage, userInfo.id],
-    () => getLetterList(userInfo.id, pumpkinPage),
+    ["getLetterList", letterPage, userInfo.id],
+    () => getLetterList(userInfo.id, letterPage),
     {
       onSuccess: (data) => {
         // console.log("🎁 Success getLetterListData:", data);
-        setPumpkinList(data);
+        setLetterList(data);
       },
       onError: (err) => {
         console.log("🎃 Error getLetterList:", err);
@@ -176,10 +176,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         alt="bg"
         className="absolute left-0 top-0 -z-50 h-full w-full"
       />
-      <PageController
-        setCurrentPage={setPumpkinPage}
-        currentPage={pumpkinPage}
-      />
+      <PageController setCurrentPage={setLetterPage} currentPage={letterPage} />
       <ButtonForUser />
       <div className="text-yellow-500 font-bold text-4xl mt-10">
         <div className="pb-4">
@@ -189,7 +186,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
         <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
       </div>
       <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
-        {pumpkinList.map((letter, idx) => {
+        {letterList.map((letter, idx) => {
           const flag = letter.id > 0;
           const imageName = flag ? "full" : "empty";
           return (
