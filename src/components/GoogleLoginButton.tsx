@@ -11,11 +11,11 @@ const GoogleLoginButton = () => {
 
   return (
     <button
-      className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
+      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       type="button"
       onClick={onClickSignIn()}
     >
-      Login with Google
+      롤링페이퍼 만들기
     </button>
   );
 };

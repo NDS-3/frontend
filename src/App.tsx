@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import AllRollingPapers from "./pages/AllRollingPapers";
 import { Auth, Hub } from "aws-amplify";
-import SignIn from "./pages/SignIn";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
@@ -47,7 +46,6 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<GhostHome />} />
-      <Route path="/signin" element={<SignIn />} />
       <Route
         path="/:personalPath"
         element={<AllRollingPapers setGetUrlFlag={setFlag} />}

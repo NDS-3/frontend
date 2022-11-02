@@ -4,9 +4,10 @@ phases:
     commands:
       - echo Installing source NPM dependencies...
       - npm install
-      - npm install -g @aws-amplify/cli
-      - chmod +x ./amplify-pull.sh
-      - ./amplify-pull.sh
+      - sudo yum install unzip openssl -y
+      - openssl enc -d -aes-256-cbc -md sha256 -in src/aws-exports.js.secrets -out src/aws-exports.js -k $SECRET_KEY
+      - openssl enc -d -aes-256-cbc -md sha256 -in amplify.zip.secrets -out amplify.zip -k $SECRET_KEY
+      - unzip amplify.zip
   build:
     commands:
       - echo Build started on `date`
@@ -14,14 +15,14 @@ phases:
   post_build:
     commands:
       # copy the contents of /build to S3
-      - aws s3 cp --recursive --acl public-read ./build s3://project-frontend-3team/
+      - aws s3 cp --recursive --acl public-read ./build s3://project-frontend-bucket/
 
       # set the cache-control headers for index.html to prevent
       # browser caching
       - >
         aws s3 cp --acl public-read 
         --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
-        ./build/index.html s3://project-frontend-3team/
+        ./build/index.html s3://project-frontend-bucket/
 artifacts:
   files:
     - '**/*'
