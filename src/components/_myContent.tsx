@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { googleJWTState } from "../recoil/user";
 import { AxiosError, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+import html2canvas from "html2canvas";
 
 const _myContent = () => {
   const [letter, setLetter] = useRecoilState(letterState);
