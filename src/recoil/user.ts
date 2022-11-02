@@ -14,6 +14,12 @@ export const ownerState = atom<OwnerType>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const isOwnerState = atom<boolean>({
+  key: "isOwnerState",
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const googleJWTState = atom<string>({
   key: "googleJWTState",
   default: "",

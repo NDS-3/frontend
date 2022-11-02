@@ -11,10 +11,3 @@ export const apiClient = axios.create({
     "Access-Control-Allow-Origin": "*",
   },
 });
-
-export const tApiClient = axios.create({
-  baseURL,
-  headers: {
-    "Content-type": "application/json",
-  },
-});
