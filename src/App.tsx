@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import AllRollingPapers from "./pages/AllRollingPapers";
 import { Auth, Hub } from "aws-amplify";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
 import { useQuery } from "react-query";
@@ -14,14 +14,14 @@ function App() {
   const [flag, setFlag] = useState(false);
 
   const [jwt, setJwt] = useRecoilState(googleJWTState);
-  const setUserInfo = useSetRecoilState(ownerState);
+  const [userInfo, setUserInfo] = useRecoilState(ownerState);
 
-  useQuery(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
-    onSuccess: (data) => {
-      console.log("✅ getUrlByToken:", data);
+  useQuery<string>(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
+    onSuccess: (personalUrl) => {
+      console.log("✅ getUrlByToken:", personalUrl);
       setFlag(false);
-      setUserInfo({ ...data });
-      navigate(`/${data.personalUrl}`);
+      setUserInfo({ ...userInfo, personalUrl });
+      navigate(`/${personalUrl}`);
     },
     enabled: jwt.length > 0 && flag,
   });
