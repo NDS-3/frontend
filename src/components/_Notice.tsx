@@ -12,17 +12,19 @@ const _Notice = () => {
   const setShowStickersModal = useSetRecoilState(showStickerModalState);
 
   return (
-    <div className="flex flex-col p-20 justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-white text-xl">
+    <div className="flex flex-col px-20 justify-evenly absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full text-xl">
       <p className="text-4xl">안내문</p>
-      {notices.map((v, i) => (
-        <div key={i} className="flex">
-          <p>{i + 1}.</p>
-          <p className="ml-2 text-start">{v}</p>
-        </div>
-      ))}
-      <div className="mb-[20px] mr-[20px]">
+      <div>
+        {notices.map((v, i) => (
+          <div key={i} className="flex mb-2">
+            <p>{i + 1}.</p>
+            <p className="ml-2 text-start">{v}</p>
+          </div>
+        ))}
+      </div>
+      <div>
         <button
-          className="py-2 px-5 rounded-lg shadow-md bg-orange-300"
+          className="py-2 px-5 rounded-lg shadow-md bg-my-button hover:bg-my-button-hover hover:text-white"
           onClick={() => setShowStickersModal(true)}
         >
           캐릭터 선택

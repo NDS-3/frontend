@@ -28,7 +28,7 @@ const Password = () => {
         if (getLetterWithPasswordStatus === 403) {
           alert("비밀번호가 틀렸습니다.\n다시 입력해주세요.");
           setPassword("");
-        } else console.log("🎃 Error getLetterWithPassword", err);
+        } else console.log("🤷‍♀️ Error getLetterWithPassword", err);
       },
     }
   );
@@ -54,7 +54,7 @@ const Password = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button className="py-1 px-3 mt-2 rounded-lg shadow-md bg-orange-300">
+        <button className="py-1 px-3 mt-2 rounded-lg shadow-md bg-my-button hover:bg-my-button-hover hover:text-white">
           롤링페이퍼 보러가기
         </button>
       </form>

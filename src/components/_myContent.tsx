@@ -17,9 +17,8 @@ const _myContent = () => {
       setFlag(false);
       setLetter(res.data);
     },
-    onError: (err: AxiosError) => {
+    onError: () => {
       setFlag(false);
-      console.log("🤷‍♀️ Error getMyLetterDetail:", err);
     },
     enabled: flag,
   });
@@ -48,7 +47,7 @@ const _myContent = () => {
 
   return (
     <div
-      className="w-full h-full text-white text-xl py-3 flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      className="w-full h-full text-xl py-3 flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       id="capture-letter"
     >
       <div className="h-1/5">
@@ -58,12 +57,12 @@ const _myContent = () => {
           alt="character"
         />
       </div>
-      <div className="text-white h-2/3 px-10 break-all whitespace-pre-line overflow-y-auto">
+      <div className="h-2/3 px-10 break-all whitespace-pre-line overflow-y-auto">
         {letter.content}
       </div>
       <div className="mr-1 flex justify-end">
         <button
-          className="py-1 px-3 mr-5 rounded-lg shadow-md bg-orange-300"
+          className="py-1 px-3 mr-5 rounded-lg shadow-md bg-my-button hover:bg-my-button-hover hover:text-white"
           onClick={() => clickLetterCapture()}
         >
           편지 캡처

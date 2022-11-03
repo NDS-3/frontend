@@ -62,7 +62,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
       console.log("🎁 Success postLetter:", data);
     },
     onError: (err) => {
-      console.log("🎃 Error postLetter:", err);
+      console.log("🤷‍♀️ Error postLetter:", err);
     },
   });
 
@@ -73,7 +73,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
       console.log("🎁 Success patchLetter:", data);
     },
     onError: (err) => {
-      console.log("🎃 Error patchLetter:", err);
+      console.log("🤷‍♀️ Error patchLetter:", err);
     },
   });
 
@@ -140,7 +140,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
       </div>
       <div className="w-1/5 relative">
         <button
-          className="absolute bottom-0 right-1 py-1 px-3 rounded-lg shadow-md bg-orange-300"
+          className="absolute bottom-0 right-1 py-1 px-3 rounded-lg shadow-md bg-my-button hover:bg-my-button-hover hover:text-white"
           onClick={() => clickButton()}
         >
           {createOrUpdate === "create" ? "편지 보내기" : "편지 고치기"}

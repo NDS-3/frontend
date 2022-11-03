@@ -7,7 +7,7 @@ const Letter = ({ element }: IProps) => {
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4/5 aspect-square">
       <img
         className="relative"
-        src={`${process.env.PUBLIC_URL}/img/letter.jpg`}
+        src={`${process.env.PUBLIC_URL}/img/paper.jpg`}
         alt="letter-bg"
       />
       {element}

@@ -16,5 +16,4 @@ export const slectedStickerState = atom<StickerType>({
     id: -1,
     imageUrl: "",
   },
-  // effects_UNSTABLE: [persistAtom],
 });
