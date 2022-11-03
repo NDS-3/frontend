@@ -43,3 +43,8 @@ export interface GetLetterByPasswordType {
   letterId?: number;
   password: string;
 }
+
+export interface isCheckType {
+  isOwner: boolean;
+  isPassed: boolean;
+}

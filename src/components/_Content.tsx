@@ -3,15 +3,20 @@ import { showModalState } from "../recoil/modal";
 import { letterState } from "../recoil/letter";
 import { deleteLetter } from "../api/letter";
 import { useQueryClient } from "react-query";
+import { isCheckState } from "../recoil/user";
 
 const _Content = () => {
   const queryClient = useQueryClient();
 
-  const setShowModal = useSetRecoilState(showModalState);
   const [letter] = useRecoilState(letterState);
+  const [isCheck] = useRecoilState(isCheckState);
+  const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
 
   const clickDelete = () => {
+    if (isCheck.isPassed)
+      return alert("편지를 지울 수 있는 날짜가 지났습니다.");
+
     const answer = window.confirm("이 편지를 지우실 건가요?");
     if (answer) {
       deleteLetter(letter.id).then(() => {
@@ -23,6 +28,9 @@ const _Content = () => {
   };
 
   const chnageToUpdateModal = () => {
+    if (isCheck.isPassed)
+      return alert("편지를 수정할 수 있는 날짜가 지났습니다.");
+
     setShowModal("수정");
   };
 

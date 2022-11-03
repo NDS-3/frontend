@@ -5,7 +5,7 @@ import { EachLetterType } from "../type";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { useMutation, useQueryClient } from "react-query";
 import { postLetter, patchLetter } from "../api/letter";
-import { ownerState } from "../recoil/user";
+import { ownerState, isCheckState } from "../recoil/user";
 interface IProps {
   createOrUpdate: string;
 }
@@ -14,6 +14,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
   const queryClient = useQueryClient();
   const [inputPassword, setInputPassword] = useState("");
   const [userInfo] = useRecoilState(ownerState);
+  const [isCheck] = useRecoilState(isCheckState);
 
   const setShowModal = useSetRecoilState(showModalState);
   const setShowStickerModal = useSetRecoilState(showStickerModalState);
@@ -33,6 +34,8 @@ const _Write = ({ createOrUpdate }: IProps) => {
   }, []);
 
   const clickButton = () => {
+    if (isCheck.isPassed) return alert("편지를 쓸 수 있는 날짜가 지났습니다.");
+
     const contentLen = newLetter.content.trim().length;
     if (contentLen < 20 || contentLen > 200)
       return alert(
@@ -47,6 +50,7 @@ const _Write = ({ createOrUpdate }: IProps) => {
         return alert("비밀번호는 4자 ~ 8자의 한글과 영어로 입력하세요");
       else return createLetter();
     }
+
     return updateLetter();
   };
 

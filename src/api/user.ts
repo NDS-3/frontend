@@ -17,7 +17,7 @@ export const getUrl = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  return response.data.personalUrl;
 };
 
 export const patchUserName = async (data: PatchUserNameType) => {
@@ -29,4 +29,9 @@ export const patchUserName = async (data: PatchUserNameType) => {
     },
   });
   return response.data;
+};
+
+export const getCheckPassedDate = async () => {
+  const response = await apiClient.get("/days/check");
+  return response.data.isPassed;
 };

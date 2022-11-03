@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { OwnerType } from "../type";
+import { OwnerType, isCheckType } from "../type";
 
 const { persistAtom } = recoilPersist();
 
@@ -14,14 +14,16 @@ export const ownerState = atom<OwnerType>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const isOwnerState = atom<boolean>({
-  key: "isOwnerState",
-  default: false,
-  effects_UNSTABLE: [persistAtom],
-});
-
 export const googleJWTState = atom<string>({
   key: "googleJWTState",
   default: "",
   effects_UNSTABLE: [persistAtom],
+});
+
+export const isCheckState = atom<isCheckType>({
+  key: "isCheckState",
+  default: {
+    isOwner: false,
+    isPassed: true,
+  },
 });

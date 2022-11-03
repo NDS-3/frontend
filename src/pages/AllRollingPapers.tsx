@@ -5,11 +5,11 @@ import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
-import { googleJWTState, isOwnerState, ownerState } from "../recoil/user";
+import { googleJWTState, ownerState, isCheckState } from "../recoil/user";
 
 import { useQuery } from "react-query";
 import { getLetterList } from "../api/letter";
-import { getUrl, getUserInfo } from "../api/user";
+import { getCheckPassedDate, getUrl, getUserInfo } from "../api/user";
 
 import Characters from "../components/Characters";
 import Password from "../components/Password";
@@ -39,7 +39,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const [showModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
   const [showStickersModal] = useRecoilState(showStickerModalState);
   const [jwt, setJwt] = useRecoilState(googleJWTState);
-  const [isOwner, setIsOwner] = useRecoilState(isOwnerState);
+  const [isCheck, setIsCheck] = useRecoilState(isCheckState);
 
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
@@ -51,6 +51,25 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       onSuccess: (data) => {
         console.log("🎁 Success getUserInfo:", data);
         setUserInfo({ ...data, personalUrl: personalPath || "" });
+      },
+      enabled: !!personalPath,
+    }
+  );
+
+  useQuery<string>(["checkEncryption", personalPath], () => getUrl(jwt), {
+    onSuccess: (personalUrl) => {
+      setIsCheck({ ...isCheck, isOwner: personalPath === personalUrl });
+    },
+    enabled: !!personalPath,
+  });
+
+  useQuery<boolean>(
+    ["checkPassedDate", personalPath],
+    () => getCheckPassedDate(),
+    {
+      onSuccess: (isPassed) => {
+        console.log("isPassed?:", isPassed);
+        setIsCheck({ ...isCheck, isPassed });
       },
       enabled: !!personalPath,
     }
@@ -71,41 +90,33 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     }
   );
 
-  useQuery(["checkEncryption", personalPath], () => getUrl(jwt), {
-    onSuccess: ({ personalUrl }) => {
-      if (personalUrl === personalPath) {
-        setIsOwner(true);
-      } else {
-        setIsOwner(false);
-      }
-    },
-    enabled: !!personalPath,
-  });
-
   const copyLink = () => {
     const text = window.location.href;
     window.navigator.clipboard.writeText(text);
   };
 
   const clickPumpkin = (flag: boolean, id: number) => {
+    // true: 쓴 편지, false: 안 쓴 편지
     setCreateOrUpdate(flag ? "update" : "create");
-    if (flag) {
-      console.log(id + "로 요청 보내기");
-      setLetter({ ...letter, id: id });
-      // 주인이고 **날짜**가 되었다면
-      if (isOwner) {
-        setShowModal("주인");
-      } else {
-        setShowModal("비번");
-      }
+    setLetter({ ...letter, id: id });
+    // 날짜가 지남
+    // 쓴편지 -> 주인은 연다. 주인아니면 날짜가 지나서 주인만 볼 수 있습니다.
+    // 안쓴편지 -> 편지를 쓸 수 있는 날짜가 지났습니다.
+    // 날짜가 안지남
+    // 쓴편지 -> 비번
+    // 안쓴편지 -> 안내
+    if (isCheck.isPassed) {
+      if (!flag) return alert("편지를 쓸 수 있는 날짜가 지났습니다.");
+      if (isCheck.isOwner) return setShowModal("주인");
+      return alert("날짜가 지나서 주인만 볼 수 있습니다.");
     } else {
-      resetLetter();
-      setShowModal("안내");
+      if (flag) return setShowModal("비번");
+      return setShowModal("안내");
     }
   };
 
   const changeName = () => {
-    if (isOwner) setShowModal("이름");
+    if (isCheck.isOwner) setShowModal("이름");
   };
 
   const ModalCase = () => {
