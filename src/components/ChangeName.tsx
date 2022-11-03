@@ -7,9 +7,9 @@ import { useMutation } from "react-query";
 
 const ChangeName = () => {
   const [newName, setNewName] = useState("");
-  const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const [jwt] = useRecoilState(googleJWTState);
   const setShowModal = useSetRecoilState(showModalState);
+  const setUserInfo = useSetRecoilState(ownerState);
 
   const { mutate: patchUserNameMutation } = useMutation(patchUserName, {
     onSuccess: (data) => {

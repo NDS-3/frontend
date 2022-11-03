@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType, getUSerInfoType } from "../type";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { googleJWTState, ownerState, isCheckState } from "../recoil/user";
@@ -42,7 +42,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const [isCheck, setIsCheck] = useRecoilState(isCheckState);
 
   const setShowModal = useSetRecoilState(showModalState);
-  const resetLetter = useResetRecoilState(letterState);
 
   useQuery<getUSerInfoType>(
     ["getUserInfo", personalPath],
@@ -96,15 +95,8 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   };
 
   const clickPumpkin = (flag: boolean, id: number) => {
-    // true: 쓴 편지, false: 안 쓴 편지
     setCreateOrUpdate(flag ? "update" : "create");
     setLetter({ ...letter, id: id });
-    // 날짜가 지남
-    // 쓴편지 -> 주인은 연다. 주인아니면 날짜가 지나서 주인만 볼 수 있습니다.
-    // 안쓴편지 -> 편지를 쓸 수 있는 날짜가 지났습니다.
-    // 날짜가 안지남
-    // 쓴편지 -> 비번
-    // 안쓴편지 -> 안내
     if (isCheck.isPassed) {
       if (!flag) return alert("편지를 쓸 수 있는 날짜가 지났습니다.");
       if (isCheck.isOwner) return setShowModal("주인");
@@ -126,7 +118,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       case "읽기":
         return <Letter element={<_Content />} />;
       case "주인":
-        // return <Letter element={<_myContent />} />;
         return <Letter element={<_myContent />} />;
       case "안내":
         return <Letter element={<_Notice />} />;
@@ -199,7 +190,8 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
         {letterList.map((letter, idx) => {
           const flag = letter.id > 0;
-          const imageName = flag ? "full" : "empty";
+          // const imageName = flag ? "full" : "empty";
+          const imageName = flag ? "after" : "before";
           return (
             <div key={idx} className="m-1 relative">
               <img
