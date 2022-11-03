@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { letterState } from "../recoil/letter";
 import { EachLetterType } from "../type";
 import { showModalState, showStickerModalState } from "../recoil/modal";
@@ -12,14 +12,8 @@ interface IProps {
 
 const _Write = ({ createOrUpdate }: IProps) => {
   const queryClient = useQueryClient();
+
   const [inputPassword, setInputPassword] = useState("");
-  const [userInfo] = useRecoilState(ownerState);
-  const [isCheck] = useRecoilState(isCheckState);
-
-  const setShowModal = useSetRecoilState(showModalState);
-  const setShowStickerModal = useSetRecoilState(showStickerModalState);
-
-  const [letter, setLetter] = useRecoilState(letterState);
   const [newLetter, setNewLetter] = useState<EachLetterType>({
     id: -1,
     sticker: {
@@ -28,6 +22,13 @@ const _Write = ({ createOrUpdate }: IProps) => {
     },
     content: "",
   });
+
+  const userInfo = useRecoilValue(ownerState);
+  const isCheck = useRecoilValue(isCheckState);
+  const setShowModal = useSetRecoilState(showModalState);
+  const setShowStickerModal = useSetRecoilState(showStickerModalState);
+
+  const [letter, setLetter] = useRecoilState(letterState);
 
   useEffect(() => {
     setNewLetter(letter);

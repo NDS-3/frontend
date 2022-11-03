@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType, getUSerInfoType } from "../type";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { letterState, viewLetterListState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { googleJWTState, ownerState, isCheckState } from "../recoil/user";
@@ -33,15 +33,14 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const [letterPage, setLetterPage] = useState(0);
   const [createOrUpdate, setCreateOrUpdate] = useState("create");
 
+  const showStickersModal = useRecoilValue(showStickerModalState);
+  const setLetter = useSetRecoilState(letterState);
+
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
   const [letterList, setLetterList] = useRecoilState(viewLetterListState);
-  const [letter, setLetter] = useRecoilState(letterState);
-  const [showModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
-  const [showStickersModal] = useRecoilState(showStickerModalState);
+  const [showModal, setShowModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
   const [jwt, setJwt] = useRecoilState(googleJWTState);
   const [isCheck, setIsCheck] = useRecoilState(isCheckState);
-
-  const setShowModal = useSetRecoilState(showModalState);
 
   useQuery<getUSerInfoType>(
     ["getUserInfo", personalPath],
@@ -96,7 +95,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
 
   const clickPumpkin = (flag: boolean, id: number) => {
     setCreateOrUpdate(flag ? "update" : "create");
-    setLetter({ ...letter, id: id });
+    setLetter((prevLetter) => ({ ...prevLetter, id: id }));
     if (isCheck.isPassed) {
       if (!flag) return alert("편지를 쓸 수 있는 날짜가 지났습니다.");
       if (isCheck.isOwner) return setShowModal("주인");
@@ -185,7 +184,9 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
           <span onClick={() => changeName()}>{userInfo.username}</span>
           <span>님의 롤링페이퍼입니다.</span>
         </div>
-        <p>빈 호박을 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.</p>
+        <p>
+          빈 편지봉투를 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.
+        </p>
       </div>
       <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
         {letterList.map((letter, idx) => {

@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { letterState } from "../recoil/letter";
 import { getMyLetter } from "../api/letter";
 import { useQuery } from "react-query";
@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import html2canvas from "html2canvas";
 
 const _myContent = () => {
-  const [letter, setLetter] = useRecoilState(letterState);
-  const [jwt] = useRecoilState(googleJWTState);
   const [flag, setFlag] = useState(false);
+  const jwt = useRecoilValue(googleJWTState);
+  const [letter, setLetter] = useRecoilState(letterState);
 
   useQuery(["getMyLetterDetail", flag], () => getMyLetter(letter.id, jwt), {
     onSuccess: (res: AxiosResponse) => {

@@ -1,4 +1,4 @@
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { letterState } from "../recoil/letter";
 import { deleteLetter } from "../api/letter";
@@ -8,8 +8,8 @@ import { isCheckState } from "../recoil/user";
 const _Content = () => {
   const queryClient = useQueryClient();
 
-  const [letter] = useRecoilState(letterState);
-  const [isCheck] = useRecoilState(isCheckState);
+  const letter = useRecoilValue(letterState);
+  const isCheck = useRecoilValue(isCheckState);
   const setShowModal = useSetRecoilState(showModalState);
   const resetLetter = useResetRecoilState(letterState);
 

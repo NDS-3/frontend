@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getLetterWithPassword } from "../api/letter";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ownerState } from "../recoil/user";
 import { showModalState } from "../recoil/modal";
 import { letterState } from "../recoil/letter";
@@ -9,8 +9,10 @@ import { AxiosError, AxiosResponse } from "axios";
 
 const Password = () => {
   const [password, setPassword] = useState("");
-  const [userInfo] = useRecoilState(ownerState);
+
+  const userInfo = useRecoilValue(ownerState);
   const setShowModal = useSetRecoilState(showModalState);
+
   const [letter, setLetter] = useRecoilState(letterState);
 
   const { mutate: getLetterWithPasswordMutation } = useMutation(

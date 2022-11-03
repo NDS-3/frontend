@@ -13,10 +13,12 @@ interface IProps {
 
 const Characters = ({ createOrUpdate }: IProps) => {
   const [page, setPage] = useState(0);
+
   const [originIcons, setOriginIcons] = useRecoilState(stickerListState);
-  const [letter, setLetter] = useRecoilState(letterState);
   const [viewIcons, setViewIcons] = useState<StickerType[]>([]);
+
   const setShowModal = useSetRecoilState(showModalState);
+  const setLetter = useSetRecoilState(letterState);
   const setShowStickersModal = useSetRecoilState(showStickerModalState);
 
   useQuery<StickerType[]>(["getStickers"], () => getStickers(), {
@@ -32,7 +34,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
   }, [originIcons, page]);
 
   const clickSticker = (sticker: StickerType) => {
-    setLetter({ ...letter, sticker });
+    setLetter((prevLetter) => ({ ...prevLetter, sticker }));
     setShowStickersModal(false);
     if (createOrUpdate === "create") {
       setShowModal("쓰기");
