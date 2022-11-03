@@ -1,6 +1,6 @@
 import GoogleLoginButton from "../components/GoogleLoginButton";
 
-const GhostHome = () => {
+const Home = () => {
   return (
     <>
       <div className="relative h-screen w-screen text-center">
@@ -16,4 +16,4 @@ const GhostHome = () => {
   );
 };
 
-export default GhostHome;
+export default Home;

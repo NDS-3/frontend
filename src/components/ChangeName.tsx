@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { showModalState } from "../recoil/modal";
 import { googleJWTState, ownerState } from "../recoil/user";
 import { patchUserName } from "../api/user";
@@ -7,7 +7,8 @@ import { useMutation } from "react-query";
 
 const ChangeName = () => {
   const [newName, setNewName] = useState("");
-  const [jwt] = useRecoilState(googleJWTState);
+
+  const jwt = useRecoilValue(googleJWTState);
   const setShowModal = useSetRecoilState(showModalState);
   const setUserInfo = useSetRecoilState(ownerState);
 

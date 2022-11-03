@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import Home from "./pages/Home";
 import AllRollingPapers from "./pages/AllRollingPapers";
 import { Auth, Hub } from "aws-amplify";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { googleJWTState, ownerState } from "./recoil/user";
 import { getUrl } from "./api/user";
 import { useQuery } from "react-query";
-import GhostHome from "./pages/GhostHome";
 
 function App() {
   const navigate = useNavigate();
@@ -14,13 +14,16 @@ function App() {
   const [flag, setFlag] = useState(false);
 
   const [jwt, setJwt] = useRecoilState(googleJWTState);
-  const [userInfo, setUserInfo] = useRecoilState(ownerState);
+  const setUerInfo = useSetRecoilState(ownerState);
 
   useQuery<string>(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
     onSuccess: (personalUrl) => {
       console.log("✅ getUrlByToken:", personalUrl);
       setFlag(false);
-      setUserInfo({ ...userInfo, personalUrl });
+      setUerInfo((prevUserInfo) => ({
+        ...prevUserInfo,
+        personalUrl: personalUrl,
+      }));
       navigate(`/${personalUrl}`);
     },
     enabled: jwt.length > 0 && flag,
@@ -45,7 +48,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<GhostHome />} />
+      <Route path="/" element={<Home />} />
       <Route
         path="/:personalPath"
         element={<AllRollingPapers setGetUrlFlag={setFlag} />}
