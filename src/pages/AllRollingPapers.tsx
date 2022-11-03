@@ -78,20 +78,11 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     () => getLetterList(userInfo.id, letterPage),
     {
       onSuccess: (data) => {
-        // console.log("🎁 Success getLetterListData:", data);
         setLetterList(data);
-      },
-      onError: (err) => {
-        console.log("🎃 Error getLetterList:", err);
       },
       enabled: userInfo.id > 0,
     }
   );
-
-  const copyLink = () => {
-    const text = window.location.href;
-    window.navigator.clipboard.writeText(text);
-  };
 
   const clickPumpkin = (flag: boolean, id: number) => {
     setCreateOrUpdate(flag ? "update" : "create");
@@ -134,7 +125,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
   const ButtonForUser = () => {
     const divStyle = "fixed top-5 right-0";
     const buttonStyle =
-      "mr-5 py-1 px-3 rounded-lg shadow-md bg-orange-300 border border-solid border-black cursor-pointer hover:scale-105 transition-all";
+      "mr-5 py-1 px-3 rounded-lg shadow-md bg-my-button border border-solid border-black cursor-pointer hover:scale-105 transition-all";
 
     if (!!jwt) {
       const clickLogout = () => {
@@ -149,10 +140,10 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       return (
         <div className={divStyle}>
           <button onClick={() => clickLogout()} className={buttonStyle}>
-            logout
+            LOGOUT
           </button>
           <button onClick={() => clickMypage()} className={buttonStyle}>
-            my rollingpaper
+            MY PAPER
           </button>
         </div>
       );
@@ -163,38 +154,54 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       return (
         <div className={divStyle}>
           <button onClick={() => clickLogin()} className={buttonStyle}>
-            login
+            LOGIN
           </button>
         </div>
       );
     }
   };
 
+  const LinkDiv = () => {
+    const copyLink = () => {
+      const text = window.location.href;
+      window.navigator.clipboard.writeText(text);
+    };
+
+    return (
+      <div>
+        <p className="text-white text-xl">링크를 공유하세요</p>
+        <button
+          className="py-3 px-6 rounded-lg shadow-md border border-solid border-black bg-my-button cursor-pointer hover:font-bold transition-all"
+          onClick={() => copyLink()}
+        >
+          {window.location.href}
+        </button>
+      </div>
+    );
+  };
+
   return (
-    <div className="h-screen w-screen relative flex flex-col justify-evenly text-center">
+    <div className="h-screen w-screen relative flex flex-col justify-around text-center">
       <img
-        src={`${process.env.PUBLIC_URL}/img/background.png`}
-        alt="bg"
         className="absolute left-0 top-0 -z-50 h-full w-full"
+        src={`${process.env.PUBLIC_URL}/img/bg1.png`}
+        alt="bg"
       />
       <PageController setCurrentPage={setLetterPage} currentPage={letterPage} />
       <ButtonForUser />
-      <div className="text-yellow-500 font-bold text-4xl mt-10">
+      <div className="font-bold text-4xl">
         <div className="pb-4">
           <span onClick={() => changeName()}>{userInfo.username}</span>
           <span>님의 롤링페이퍼입니다.</span>
         </div>
-        <p>
-          빈 편지봉투를 클릭해 롤링페이퍼 주인에게 하고 싶은 말을 작성해주세요.
-        </p>
+        <p>빈 편지봉투를 클릭해 전하고 싶은 말을 작성해보세요!</p>
       </div>
-      <div className="dddddd w-4/5 mx-auto grid grid-cols-5">
+      <div className="w-4/5 mx-auto grid grid-cols-5">
         {letterList.map((letter, idx) => {
           const flag = letter.id > 0;
-          // const imageName = flag ? "full" : "empty";
           const imageName = flag ? "after" : "before";
           return (
-            <div key={idx} className="m-1 relative">
+            <div key={idx} className="my-5 relative">
               <img
                 className="w-3/5 aspect-square cursor-pointer mx-auto"
                 src={`${process.env.PUBLIC_URL}/img/${imageName}.png`}
@@ -204,7 +211,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
               />
               {flag && (
                 <img
-                  className="absolute left-1/2 top-1/2 pb-5 -translate-x-1/2 -translate-y-1/3 w-1/2 cursor-pointer hover:scale-110 transition-all"
+                  className="absolute left-1/2 top-1/2 pb-5 -translate-x-1/2 -translate-y-1/3 w-1/2 cursor-pointer hover:scale-90 transition-all"
                   src={letter.sticker.imageUrl}
                   alt="character"
                   onClick={() => clickPumpkin(flag, letter.id)}
@@ -214,15 +221,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
           );
         })}
       </div>
-      <div>
-        <p className="text-white text-xl">링크를 공유하세요</p>
-        <button
-          className="py-3 px-6 rounded-lg shadow-md bg-neutral-400 font-semibold hover:font-bold"
-          onClick={() => copyLink()}
-        >
-          {window.location.href}
-        </button>
-      </div>
+      <LinkDiv />
       {showModal !== "닫기" && <Modal element={<ModalCase />} />}
       {showStickersModal && <Characters createOrUpdate={createOrUpdate} />}
     </div>

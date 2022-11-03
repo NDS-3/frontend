@@ -18,7 +18,6 @@ function App() {
 
   useQuery<string>(["getUrlByToken", flag, jwt], () => getUrl(jwt), {
     onSuccess: (personalUrl) => {
-      console.log("✅ getUrlByToken:", personalUrl);
       setFlag(false);
       setUerInfo((prevUserInfo) => ({
         ...prevUserInfo,
@@ -37,7 +36,6 @@ function App() {
     const getUserFromGoogle = async () => {
       try {
         const token = await Auth.currentAuthenticatedUser();
-        console.log("✅getToken:", token);
         setFlag(true);
         setJwt(token.getSignInUserSession().getAccessToken().getJwtToken());
       } catch (err) {

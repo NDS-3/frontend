@@ -19,7 +19,7 @@ const ChangeName = () => {
       setUserInfo(data);
     },
     onError: (err) => {
-      console.log("🎃 Error patchUserName:", err);
+      console.log("🤷‍♀️ Error patchUserName:", err);
     },
   });
 
@@ -50,7 +50,7 @@ const ChangeName = () => {
             onChange={(e) => setNewName(e.target.value)}
           />
         </label>
-        <button className="py-1 px-3 mt-2 rounded-lg shadow-md bg-orange-300">
+        <button className="py-1 px-3 mt-2 rounded-lg shadow-md bg-my-button hover:bg-my-button-hover hover:text-white">
           이름 변경하기
         </button>
       </form>
