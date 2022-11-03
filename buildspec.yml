@@ -20,7 +20,7 @@ phases:
       # set the cache-control headers for index.html to prevent
       # browser caching
       - >
-        aws s3 cp --acl public-read 
+        aws s3 cp 
         --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
         ./build/index.html s3://project-frontend-bucket/
 artifacts:
