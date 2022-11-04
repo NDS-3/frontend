@@ -105,13 +105,10 @@ const _Write = ({ createOrUpdate }: IProps) => {
 
   return (
     <div className="flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full py-3">
-      <div className="w-1/5">
+      <div className="w-1/5 px-1">
         <img
           className="aspect-square cursor-pointer"
-          src={
-            newLetter.sticker.imageUrl ||
-            "https://cdn.wadiz.kr/ft/images/green001/2021/1220/20211220134242960_16.jpg/wadiz/format/jpg/quality/80/optimize"
-          }
+          src={newLetter.sticker.imageUrl}
           alt="sticker"
           title="스티커 변경"
           onClick={() => changeSticker()}

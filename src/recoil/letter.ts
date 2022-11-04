@@ -1,14 +1,5 @@
 import { atom } from "recoil";
-import { recoilPersist } from "recoil-persist";
-import { AllLetterType, EachLetterType } from "../type";
-
-const { persistAtom } = recoilPersist();
-
-export const viewLetterListState = atom<AllLetterType[]>({
-  key: "viewLetterListState",
-  default: [],
-  effects_UNSTABLE: [persistAtom],
-});
+import { EachLetterType } from "../type";
 
 export const letterState = atom<EachLetterType>({
   key: "letterState",

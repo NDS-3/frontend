@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { AllLetterType, getUSerInfoType } from "../type";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { letterState, viewLetterListState } from "../recoil/letter";
+import { letterState } from "../recoil/letter";
 import { showModalState, showStickerModalState } from "../recoil/modal";
 import { googleJWTState, ownerState, isCheckState } from "../recoil/user";
 
@@ -32,12 +32,12 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
 
   const [letterPage, setLetterPage] = useState(0);
   const [createOrUpdate, setCreateOrUpdate] = useState("create");
+  const [letterList, setLetterList] = useState<AllLetterType[]>([]);
 
   const showStickersModal = useRecoilValue(showStickerModalState);
   const setLetter = useSetRecoilState(letterState);
 
   const [userInfo, setUserInfo] = useRecoilState(ownerState);
-  const [letterList, setLetterList] = useRecoilState(viewLetterListState);
   const [showModal, setShowModal] = useRecoilState(showModalState); // 닫기, 비번, 읽기, 안내, 쓰기, 수정, 이름
   const [jwt, setJwt] = useRecoilState(googleJWTState);
   const [isCheck, setIsCheck] = useRecoilState(isCheckState);
