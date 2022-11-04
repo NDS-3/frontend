@@ -36,7 +36,7 @@ const _Content = () => {
 
   return (
     <div className="w-full h-full text-xl py-3 flex flex-col justify-between absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <div className="h-1/5">
+      <div className="h-1/5 pl-6">
         <img
           className="h-full aspect-square"
           src={letter.sticker.imageUrl}

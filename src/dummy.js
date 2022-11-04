@@ -3,24 +3,21 @@ export const dummyLetterList = [
     id: 1,
     sticker: {
       id: 1,
-      imageUrl:
-        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost+(1).png",
+      imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
     },
   },
   {
     id: 2,
     sticker: {
       id: 2,
-      imageUrl:
-        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/angel.png",
+      imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
     },
   },
   {
     id: 3,
     sticker: {
       id: 3,
-      imageUrl:
-        "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/butterfly.png",
+      imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
     },
   },
   { id: -1, sticker: { id: -1, imageUrl: "" } },
@@ -36,7 +33,7 @@ export const dummyLetter = {
   id: 1,
   sticker: {
     id: 1,
-    imageUrl: "https://nds.nongshim.co.kr/web/images/new_main/logo01.gif",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   content:
     "여기에 글을 쓰는데...\n뭐라고 쓰면 좋을까? 할 말이 딱히 없다.\n오늘 저녁은 또 뭘 먹지.\n오늘 할 일을 과연 6시까지 다 끝낼 수 있을까? 왜 벌써 목요일이지",
@@ -45,48 +42,39 @@ export const dummyLetter = {
 export const dummyIconList = [
   {
     id: 1,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost+(1).png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 2,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/angel.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 3,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/butterfly.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 4,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/clown.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 5,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/costume.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 6,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/cyborg.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 7,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/devil.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 8,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/dracula.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 9,
-    imageUrl:
-      "https://nds-character-12323.s3.ap-northeast-2.amazonaws.com/ghost.png",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/4213/4213646.png",
   },
   {
     id: 10,
