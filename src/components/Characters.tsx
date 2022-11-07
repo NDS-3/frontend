@@ -23,7 +23,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
 
   useQuery<StickerType[]>(["getStickers"], () => getStickers(), {
     onSuccess: (data) => {
-      console.log("🎁 Success getStickers:", data);
+      console.log("Success getStickers");
       setOriginIcons(data);
     },
   });

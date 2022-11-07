@@ -47,7 +47,7 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     () => getUserInfo(personalPath || ""),
     {
       onSuccess: (data) => {
-        console.log("🎁 Success getUserInfo:", data);
+        console.log("Success getUserInfo");
         setUserInfo({ ...data, personalUrl: personalPath || "" });
       },
       enabled: !!personalPath,
@@ -66,7 +66,6 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
     () => getCheckPassedDate(),
     {
       onSuccess: (isPassed) => {
-        console.log("isPassed?:", isPassed);
         setIsCheck({ ...isCheck, isPassed });
       },
       enabled: !!personalPath,
