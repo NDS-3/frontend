@@ -59,10 +59,10 @@ const _Write = ({ createOrUpdate }: IProps) => {
     onSuccess: (data) => {
       setLetter(data);
       queryClient.invalidateQueries(["getLetterList"]);
-      console.log("🎁 Success postLetter:", data);
+      console.log("Success postLetter");
     },
-    onError: (err) => {
-      console.log("🤷‍♀️ Error postLetter:", err);
+    onError: () => {
+      console.log("Error postLetter");
     },
   });
 
@@ -70,10 +70,10 @@ const _Write = ({ createOrUpdate }: IProps) => {
     onSuccess: (data) => {
       setLetter(data);
       queryClient.invalidateQueries(["getLetterList"]);
-      console.log("🎁 Success patchLetter:", data);
+      console.log("Success patchLetter");
     },
-    onError: (err) => {
-      console.log("🤷‍♀️ Error patchLetter:", err);
+    onError: () => {
+      console.log("Error patchLetter");
     },
   });
 

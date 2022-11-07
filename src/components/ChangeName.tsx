@@ -14,12 +14,12 @@ const ChangeName = () => {
 
   const { mutate: patchUserNameMutation } = useMutation(patchUserName, {
     onSuccess: (data) => {
-      console.log("🎁 Success patchUserName:", data);
+      console.log("Success patchUserName");
       delete data.email;
       setUserInfo(data);
     },
-    onError: (err) => {
-      console.log("🤷‍♀️ Error patchUserName:", err);
+    onError: () => {
+      console.log("Error patchUserName");
     },
   });
 

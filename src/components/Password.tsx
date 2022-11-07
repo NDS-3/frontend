@@ -20,7 +20,7 @@ const Password = () => {
     {
       onSuccess: (response: AxiosResponse) => {
         setLetter(response.data);
-        console.log("🎁 Success getLetterWithPassword:", response.data);
+        console.log("Success getLetterWithPassword");
         setShowModal("읽기");
       },
       onError: (err: AxiosError) => {
@@ -28,7 +28,7 @@ const Password = () => {
         if (getLetterWithPasswordStatus === 403) {
           alert("비밀번호가 틀렸습니다.\n다시 입력해주세요.");
           setPassword("");
-        } else console.log("🤷‍♀️ Error getLetterWithPassword", err);
+        } else console.log("Error getLetterWithPassword");
       },
     }
   );
