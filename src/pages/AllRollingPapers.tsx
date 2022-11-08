@@ -190,8 +190,20 @@ const AllRollingPapers = ({ setGetUrlFlag }: IProps) => {
       <ButtonForUser />
       <div className="font-bold text-4xl">
         <div className="pb-4">
-          <span onClick={() => changeName()}>{userInfo.username}</span>
-          <span>님의 롤링페이퍼입니다.</span>
+          <div className="relative inline-block">
+            <span>{userInfo.username}</span>
+            {isCheck.isOwner && (
+              <div className="absolute -left-10 top-0 h-full aspect-square">
+                <img
+                  className="hover:scale-90 cursor-pointer"
+                  onClick={() => changeName()}
+                  src={`${process.env.PUBLIC_URL}/img/edit.png`}
+                  alt="edit"
+                />
+              </div>
+            )}
+          </div>
+          <div className="inline-block">님의 롤링페이퍼입니다.</div>
         </div>
         <p>빈 편지봉투를 클릭해 전하고 싶은 말을 작성해보세요!</p>
       </div>
