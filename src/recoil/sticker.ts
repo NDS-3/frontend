@@ -9,11 +9,3 @@ export const stickerListState = atom<StickerType[]>({
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
-
-export const slectedStickerState = atom<StickerType>({
-  key: "slectedStickerState",
-  default: {
-    id: -1,
-    imageUrl: "",
-  },
-});

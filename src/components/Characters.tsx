@@ -26,6 +26,7 @@ const Characters = ({ createOrUpdate }: IProps) => {
       console.log("Success getStickers");
       setOriginIcons(data);
     },
+    enabled: !!!originIcons.length,
   });
 
   useEffect(() => {
