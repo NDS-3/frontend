@@ -5,7 +5,8 @@ import { useQuery } from "react-query";
 import { googleJWTState } from "../recoil/user";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { toPng } from "html-to-image";
+// import { toPng } from "html-to-image";
+import html2canvas from "html2canvas";
 
 const _myContent = () => {
   const [flag, setFlag] = useState(false);
@@ -27,18 +28,34 @@ const _myContent = () => {
     if (!flag) setFlag(true);
   }, []);
 
+  // const clickLetterCapture = () => {
+  //   const el: HTMLElement | null = document.getElementById("root");
+  //   const filename = "rolling-paper.png";
+  //   if (!!el) {
+  //     toPng(el).then((image) => {
+  //       const aTag = document.createElement("a");
+  //       aTag.href = image;
+  //       aTag.download = filename;
+  //       aTag.click();
+  //       aTag.remove();
+  //     });
+  //   }
+  // };
+
   const clickLetterCapture = () => {
-    const el: HTMLElement | null = document.getElementById("root");
-    const filename = "rolling-paper.png";
-    if (!!el) {
-      toPng(el).then((image) => {
-        const aTag = document.createElement("a");
-        aTag.href = image;
-        aTag.download = filename;
-        aTag.click();
-        aTag.remove();
+    const element: HTMLElement | null = document.getElementById("root");
+    if (!!element) {
+      html2canvas(element).then((canvas: HTMLCanvasElement) => {
+        onSaveAs(canvas.toDataURL("image/jpeg"), "rolling-paper.jpg");
       });
     }
+  };
+
+  const onSaveAs = (url: string, filename: string) => {
+    const a: HTMLAnchorElement = document.createElement("a");
+    a.href = url.replace("image/jpeg", "image/octet-stream");
+    a.download = filename;
+    a.click();
   };
 
   return (
